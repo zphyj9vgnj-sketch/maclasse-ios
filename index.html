@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#2f6f73">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ma classe">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Ma classe de maternelle</title>
+<style>
+:root { --bg:#f3f7f6; --card:#ffffff; --ink:#1d2b2c; --muted:#5a6d6e; --accent:#2f6f73; --accent-ink:#ffffff; --soft:#e3efee; --line:#d3dfde; --field:#fbfdfd; --danger:#a63d3d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#101a1b; --card:#182526; --ink:#e8f1f0; --muted:#9bb0b1; --accent:#6fc0c4; --accent-ink:#0d1b1c; --soft:#203334; --line:#2b4041; --field:#142021; --danger:#e07b7b; } }
+html, body { margin:0; height:100%; background:var(--bg); color:var(--ink); font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size:16px; line-height:1.45; overflow-x:hidden; overflow-x:clip; }
+*, *::before, *::after { box-sizing:border-box; }
+html, body, button, label, a, input, select, textarea, #view { touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+.okbar { position:sticky; bottom:-8px; padding:14px 0 8px; margin-top:14px; background:linear-gradient(180deg, transparent, var(--bg) 35%); z-index:2; }
+.okbar .btn { box-shadow:0 6px 18px rgba(20,60,60,.25); }
+.cov { width:76px; height:76px; border-radius:14px; object-fit:cover; flex:none; background:var(--soft); }
+.cov.ph { display:flex; align-items:center; justify-content:center; color:#fff; }
+.cov.ph svg { width:34px; height:34px; }
+#app { height:100%; max-width:560px; margin:0 auto; display:flex; flex-direction:column; position:relative; }
+#view { flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; overflow-x:clip; padding:max(14px, calc(env(safe-area-inset-top, 0px) + 10px)) 16px 20px; touch-action:pan-y; }
+h1 { font-size:26px; margin:6px 0 4px; line-height:1.2; }
+h2 { font-size:19px; margin:0 0 8px; }
+h3 { font-size:16px; margin:14px 0 6px; }
+p { margin:0 0 8px; }
+.muted { color:var(--muted); } .small { font-size:14px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:14px; margin:0 0 12px; }
+.row { display:flex; gap:8px; align-items:center; } .row.wrap { flex-wrap:wrap; } .grow { flex:1; min-width:0; }
+.stack { display:flex; flex-direction:column; gap:8px; }
+.btn { appearance:none; line-height:1.25; padding-top:8px; padding-bottom:8px; border:0; border-radius:14px; background:var(--accent); color:var(--accent-ink); font:inherit; font-weight:600; min-height:48px; padding:0 16px; width:100%; cursor:pointer; }
+.btn.secondary { background:var(--soft); color:var(--ink); }
+.btn.danger { background:transparent; color:var(--danger); border:1.5px solid var(--danger); }
+.btn.small { min-height:40px; width:auto; font-size:15px; padding:0 14px; }
+.link { appearance:none; background:none; border:0; color:var(--accent); font:inherit; text-decoration:underline; padding:8px 4px; cursor:pointer; }
+.chip { appearance:none; border:1.5px solid var(--line); background:var(--field); color:var(--ink); border-radius:999px; font:inherit; font-size:15px; min-height:40px; padding:0 14px; cursor:pointer; }
+.chip.on { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+.tag { display:inline-block; background:var(--soft); border-radius:10px; padding:3px 9px; font-size:13px; margin:0 6px 6px 0;  }
+.dot { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:6px; vertical-align:-1px; flex:none; }
+label { display:block; font-weight:600; font-size:15px; margin:12px 0 4px; }
+input[type=text], input[type=number], input[type=date], input[type=time], input[type=search], textarea, select { width:100%; border:1.5px solid var(--line); border-radius:14px; background:var(--field); color:var(--ink); font:inherit; font-size:16px; padding:12px; }
+input[type=date], input[type=time] { -webkit-appearance:none; appearance:none; display:block; min-height:50px; min-width:0; max-width:100%; margin:0; text-align:center; overflow:hidden; }
+input[type=time]::-webkit-date-and-time-value, input[type=date]::-webkit-date-and-time-value { text-align:center; margin:0 auto; }
+textarea { min-height:96px; resize:vertical; }
+.bar { height:10px; background:var(--soft); border-radius:999px; overflow:hidden; } .bar > i { display:block; height:100%; background:var(--accent); border-radius:999px; }
+.block { display:block; width:100%; text-align:left; background:var(--card); border:1px solid var(--line); border-left-width:8px; border-radius:16px; padding:12px 14px; margin:0 0 10px; font:inherit; color:var(--ink); cursor:pointer; }
+.block .time { font-weight:700; font-size:15px; }
+#view, #sheet .panel { scrollbar-width:none; -ms-overflow-style:none; }
+#view::-webkit-scrollbar, #sheet .panel::-webkit-scrollbar { display:none; width:0; height:0; }
+
+:root { --sh:0 1px 2px rgba(20,50,50,.05), 0 8px 22px rgba(20,60,60,.07); }
+.card { box-shadow:var(--sh); border-radius:20px; }
+.btn { box-shadow:0 1px 2px rgba(0,0,0,.08); }
+.hd { display:flex; align-items:flex-end; gap:10px; margin:2px 0 12px; }
+.mo { font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+.hd h1 { margin:0; font-size:27px; }
+.hd h1::first-letter { text-transform:uppercase; }
+.ib { appearance:none; border:0; background:var(--card); box-shadow:var(--sh); color:var(--accent); width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none; font:inherit; }
+.ib svg { width:22px; height:22px; }
+.wk { display:flex; align-items:center; gap:4px; margin:0 0 12px; }
+.wk .nv { appearance:none; border:0; background:none; color:var(--muted); font-size:22px; width:26px; height:44px; padding:0; cursor:pointer; }
+.wd { flex:1; min-width:0; appearance:none; border:0; background:var(--card); box-shadow:var(--sh); border-radius:16px; padding:7px 0 6px; display:flex; flex-direction:column; align-items:center; gap:1px; font:inherit; color:var(--ink); cursor:pointer; position:relative; }
+.wd small { font-size:11px; color:var(--muted); text-transform:uppercase; }
+.wd b { font-size:17px; }
+.wd.we { opacity:.55; }
+.wd.on { background:var(--accent); color:var(--accent-ink); opacity:1; }
+.wd.on small { color:var(--accent-ink); opacity:.85; }
+.wd.td:not(.on) b { color:var(--accent); }
+.wd i { width:6px; height:6px; border-radius:50%; background:var(--accent); position:absolute; bottom:4px; }
+.wd.on i { background:var(--accent-ink); }
+.lv { display:flex; align-items:center; gap:6px; margin:0 0 14px; }
+.lv .chip { min-height:34px; padding:0 12px; font-size:14px; }
+.mrow { display:flex; align-items:stretch; gap:8px; margin:0 0 10px; }
+.mcard { display:flex; flex:1; min-width:0; text-align:left; background:var(--card); border:0; border-radius:18px; padding:0; font:inherit; color:var(--ink); box-shadow:var(--sh); overflow:hidden; cursor:pointer; }
+.mt { width:66px; flex:none; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:10px 4px; border-right:4px solid; }
+.mt b { font-size:16px; } .mt span { font-size:12px; color:var(--muted); }
+.mb { flex:1; min-width:0; padding:11px 8px 11px 12px; }
+.mb strong { display:block; font-size:16px; }
+.mb .tg { display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; }
+.mb .tg span { font-size:12px; background:var(--soft); border-radius:8px; padding:2px 7px; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.dur { align-self:center; font-size:12.5px; color:var(--muted); padding-right:12px; white-space:nowrap; }
+.xb { appearance:none; border:0; background:var(--card); box-shadow:var(--sh); color:var(--danger); width:42px; border-radius:16px; font-size:17px; cursor:pointer; flex:none; }
+.qa { display:flex; flex-wrap:wrap; gap:8px; }
+.qa button { appearance:none; border:0; border-radius:999px; font:inherit; font-size:14.5px; font-weight:600; padding:0 14px; min-height:40px; color:#fff; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,.12); }
+.tiles { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0; }
+.tile { appearance:none; border:0; background:var(--card); box-shadow:var(--sh); border-radius:18px; padding:14px 10px; display:flex; flex-direction:column; align-items:center; gap:6px; font:inherit; font-size:14.5px; font-weight:600; color:var(--ink); text-align:center; cursor:pointer; min-height:84px; justify-content:center; }
+.tile svg { width:24px; height:24px; color:var(--accent); }
+.empty { text-align:center; padding:22px 14px 14px; }
+.empty svg { width:64px; height:64px; color:var(--accent); opacity:.85; }
+.sec { font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:18px 2px 8px; }
+.more { appearance:none; border:1.5px dashed var(--line); background:none; border-radius:14px; font:inherit; font-weight:600; color:var(--accent); width:100%; min-height:46px; margin-top:12px; cursor:pointer; }
+.banner { border-radius:20px; padding:16px; margin:0 0 12px; color:#fff; }
+.seg { display:flex; background:var(--soft); border-radius:15px; padding:4px; gap:2px; margin:0 0 12px; }
+.seg button { flex:1; min-width:0; appearance:none; border:0; background:none; min-height:42px; border-radius:12px; font:inherit; font-size:15px; font-weight:600; color:var(--muted); cursor:pointer; padding:0 6px; }
+.seg button.on { background:var(--card); color:var(--accent); box-shadow:var(--sh); }
+.ghost { border:0 !important; background:transparent !important; padding:4px 0 !important; min-height:0 !important; resize:none; overflow:hidden; }
+.todo { border:0; box-shadow:var(--sh); border-radius:16px; border-left:6px solid; padding:12px 12px; }
+.todo input[type=checkbox] { -webkit-appearance:none; appearance:none; width:26px; height:26px; border-radius:50%; border:2px solid var(--line); background:var(--field); margin-top:0; cursor:pointer; flex:none; }
+.todo input[type=checkbox]:checked { background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/70% no-repeat; border-color:var(--accent); }
+.bar { height:12px; }
+.mv { display:flex; flex-direction:column; gap:2px; flex:none; }
+.mv button, .grip { appearance:none; border:0; background:var(--soft); color:var(--muted); border-radius:8px; cursor:pointer; font:inherit; }
+.mv button { width:34px; height:22px; font-size:11px; padding:0; }
+.grip { width:34px; align-self:stretch; font-size:18px; letter-spacing:-3px; touch-action:none; cursor:grab; }
+.todo.drag { position:relative; z-index:5; box-shadow:0 10px 28px rgba(0,0,0,.25); opacity:.95; }
+.block { box-shadow:var(--sh); border-top:0; border-right:0; border-bottom:0; border-radius:16px; }
+.pct { font-size:30px; font-weight:800; line-height:1; }
+.fcard { background:var(--card); border-radius:16px; padding:10px 12px; margin:0 0 8px; border:1px solid var(--line); }
+#nav button.on svg { background:var(--soft); box-sizing:content-box; padding:3px 14px; border-radius:999px; }
+#nav { box-shadow:0 -4px 18px rgba(20,60,60,.06); }
+#nav { display:flex; border-top:1px solid var(--line); background:var(--card); padding-bottom:env(safe-area-inset-bottom, 0px); }
+#nav button { flex:1; min-width:0; background:none; border:0; font:inherit; font-size:10.5px; color:var(--muted); padding:9px 0 7px; display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; }
+#nav button.on { color:var(--accent); font-weight:700; }
+#nav svg { width:23px; height:23px; }
+#sheet { display:none; position:fixed; inset:0; z-index:20; background:rgba(0,0,0,.4); }
+#sheet.open { display:block; }
+#sheet .panel { position:absolute; left:0; right:0; bottom:0; max-width:560px; margin:0 auto; max-height:92%; overflow-y:auto; background:var(--bg); border-radius:22px 22px 0 0; padding:16px 16px max(18px, env(safe-area-inset-bottom, 0px)); }
+.opt { display:flex; gap:10px; align-items:flex-start; width:100%; text-align:left; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin:0 0 8px; font:inherit; color:var(--ink); cursor:pointer; }
+.opt.on { border-color:var(--accent); background:var(--soft); }
+.opt .ck { flex:none; width:22px; height:22px; border-radius:7px; border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:14px; line-height:1; margin-top:1px; }
+.opt.on .ck { background:var(--accent); color:var(--accent-ink); }
+.opt .grow, .seance .grow > div { white-space:pre-line; }
+.seance { border:1px dashed var(--line); border-radius:16px; padding:12px; margin:0 0 12px; background:var(--card); }
+.sw { width:34px; height:34px; border-radius:50%; border:3px solid transparent; padding:0; cursor:pointer; }
+.sw.on { border-color:var(--ink); }
+.hint { font-size:13px; color:var(--muted); margin:4px 0 0; }
+.done { text-decoration:line-through; color:var(--muted); }
+.todo { display:flex; gap:10px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-left-width:8px; border-radius:14px; padding:10px 12px; margin:0 0 8px; }
+.todo input[type=checkbox] { width:24px; height:24px; flex:none; margin-top:2px; }
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+audio, video { width:100%; margin-top:8px; border-radius:12px; }
+#print { display:none; }
+@media print { #app, #sheet { display:none !important; } #print { display:block; color:#000; background:#fff; padding:0; font-size:11pt; } #print h1 { font-size:17pt; } #print .pb { border:1px solid #999; border-radius:6px; padding:8px; margin:0 0 8px; page-break-inside:avoid; } #print h4 { margin:6px 0 2px; font-size:10.5pt; } #print p { margin:0 0 4px; white-space:pre-wrap; } html, body { background:#fff; height:auto; overflow:visible; } }
+</style>
+</head>
+<body>
+<div id="app"><main id="view" tabindex="-1"></main>
+<nav id="nav" aria-label="Navigation">
+<button type="button" data-a="tab" data-p="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 8h6M9 12h6"/></svg>Journal</button>
+<button type="button" data-a="tab" data-p="bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Réserve</button>
+<button type="button" data-a="tab" data-p="todo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7l2 2 3-3M5 15l2 2 3-3M13 8h6M13 16h6"/></svg>À faire</button>
+<button type="button" data-a="tab" data-p="comp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>Comptines</button>
+<button type="button" data-a="tab" data-p="eleves"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>Élèves</button>
+<button type="button" data-a="tab" data-p="h108"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>108 h</button>
+<button type="button" data-a="tab" data-p="reglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Réglages</button>
+</nav></div>
+<div id="sheet"><div class="panel" id="panel"></div></div>
+<div id="print"></div>
+<script>
+(function () {
+'use strict';
+var PROG = [{"nom":"Le développement et la structuration du langage oral et écrit","sous":[{"nom":"Acquérir le langage oral","groupes":[{"nom":"Enrichir son vocabulaire","ages":{"<4":["Comprendre, mémoriser, réemployer les mots des corpus enseignés (2 par période).","Organiser les mots en catégorie et en réseau."],"4+":["Comprendre, mémoriser, réemployer les mots des corpus enseignés (2 par période).","Organiser les mots en catégorie et en réseau."],"5+":["Comprendre, mémoriser, réemployer les mots des corpus enseignés (3 par période).","Organiser les mots en catégorie et en réseau."]}},{"nom":"Développer sa syntaxe","ages":{"<4":["Diversifier les pronoms employés.","Construire à l’oral un système de temps de plus en plus efficace.","Formuler des énoncés de plus en plus complexes."],"4+":["Diversifier les pronoms employés.","Construire à l’oral un système de temps de plus en plus efficace.","Formuler des énoncés de plus en plus complexes."],"5+":["Diversifier les pronoms employés.","Construire à l’oral un système de temps de plus en plus efficace.","Formuler des énoncés de plus en plus complexes."]}},{"nom":"Articuler distinctement","ages":{"<4":["Articuler distinctement les couples de consonnes proches suivants : t/k, f/s, m/n."],"4+":["Distinguer et produire correctement les nasales : é/in, a/an, o/on.","Articuler distinctement les couples de consonnes proches suivants : f/v, s/z, p/b, t/d, k/g."],"5+":["Prononcer correctement les couples de consonnes proches suivants : ch/s, ch/j, ch/z.","Prononcer correctement les doubles consonnes : br/cr/bl/pl/sl."]}},{"nom":"Produire des discours variés","ages":{"<4":["Entrer en communication verbale avec un adulte ou un autre élève.","Dire ce qu’on fait.","Dire ce qu’on a fait et, peu à peu, ce qu’on va faire.","Prendre part à l’oralisation d’un court texte mémorisé."],"4+":["Dire ce qu’on va faire.","Dire comment on a fait ou comment on va faire.","Oraliser un court texte mémorisé.","Participer à des échanges en restant dans le propos."],"5+":["Décrire une action ou une activité qui a été menée par un autre élève.","Se faire comprendre, par le truchement du langage, d’un adulte qui ne connait rien à la situation évoquée.","Participer à une conversation avec un adulte ou des pairs et reformuler son propos s’il n’a pas été compris.","Émettre une hypothèse."]}}]},{"nom":"Passer de l’oral à l’écrit : se préparer à apprendre à lire","groupes":[{"nom":"Acquérir les habiletés phonologiques et le principe alphabétique","ages":{"<4":["Identifier les sons de la langue, lors de situations d’écoute proposées par le professeur.","Identifier un mot donné à l’oral dans une phrase, dans un texte.","Scander les syllabes d’un mot.","Dire des comptines courtes comprenant des phonèmes proches.","Reconnaitre et nommer certaines lettres de son prénom écrit en capitales."],"4+":["Utiliser la voix parlée, chantée et les possibilités vocales (imitation de sons, onomatopées) afin d’expérimenter différents sons.","Entendre, discriminer des phonèmes.","Scander les syllabes d’un mot.","Manipuler les syllabes d’un mot (ajout, suppression, permutation, répétition, fusion, substitution).","Dire des comptines courtes comprenant des phonèmes proches.","Nommer les lettres de son prénom et quelques lettres de mots connus (le professeur nomme systématiquement les lettres).","Connaitre la correspondance entre les lettres scriptes majuscules et minuscules et les lettres cursives minuscules.","Donner les valeurs sonores de quelques lettres de mots simples connus."],"5+":["Utiliser les possibilités sonores de la voix.","Augmenter sa mémoire auditive et sa capacité de concentration.","Supprimer, ajouter, remplacer, inverser, substituer, fusionner les syllabes d’un mot.","Repérer et produire des rimes et des assonances.","Entendre, discriminer, manipuler des phonèmes.","Connaitre le nom des lettres de l’alphabet.","Connaitre les différentes graphies d’une même lettre (majuscule lettre capitale ; minuscules scriptes ; cursives).","Distinguer des lettres visuellement proches (b/d, c/e/o, p/q) grâce à leur écriture cursive et les nommer correctement.","Connaitre le nom des lettres de l’alphabet et leur valeur sonore hormis les occlusives.","Discriminer des mots auditivement proches."]}},{"nom":"S’éveiller à la diversité linguistique","ages":{"<4":["Écouter des chants, des comptines, des histoires connues dans des versions en français et en langue étrangère."],"4+":["Participer à des jeux dans une autre langue : jeux de doigts, rondes, jeux dansés, mimes, jeux de cour, jeux de cartes.","Comparer des histoires lues en français et dans une autre langue."]}},{"nom":"Écouter et comprendre différentes formes d’écrits","ages":{"<4":["Repérer les outils fonctionnels utilisés quotidiennement en classe (étiquette du prénom, emploi du temps, affiches, etc.).","Reconnaitre quelques écrits utilisés et produits en classe (comptines, recettes, carnet de lecteur).","Reconnaitre un personnage, le nommer et le situer dans les illustrations.","Comprendre des histoires où l’enchainement des actions peut être rattaché à des expériences connues de la vie quotidienne (le bain, le coucher, etc.)."],"4+":["Reconnaitre, nommer et identifier la fonction de différents écrits rencontrés dans la vie courante.","Prendre conscience de la notion de destinataire et de contenu de la requête adressée par un écrit.","Identifier et utiliser quotidiennement des outils fonctionnels pour se repérer, s’organiser, ranger.","Identifier et décrire le personnage principal et les personnages secondaires.","Comprendre des histoires dont les actions sont organisées autour d’une structure répétitive (rencontres successives) et commencer à comprendre les informations implicites (émotions, états et sentiments des personnages)."],"5+":["Différencier les types d’écrits et associer un écrit à un projet d’écriture ou de communication.","Repérer et dégager la structure et l’organisation (mise en page, typographie) de formes d’écrits fréquemment utilisés en classe (structure de la lettre, de la recette, du conte, d’un écrit documentaire, d’une notice de fabrication).","Construire les caractéristiques des personnages archétypaux (loup, princesse, ogre, sorcière, renard, fée, etc.).","Comprendre des histoires où l’enchainement des actions est lié au destin de personnages centraux ou secondaires qui évoluent et interagissent, dans des lieux diversifiés.","Comprendre les émotions, les intentions et les sentiments qui animent les personnages.","Établir un lien entre la lecture effectuée et sa propre expérience."]}}]},{"nom":"Passer de l’oral à l’écrit : se préparer à apprendre à écrire","groupes":[{"nom":"Apprendre le geste d’écriture","ages":{"<4":["Participer aux activités de motricité générale, de motricité fine et aux exercices de graphismes ;","Guider son geste par le regard lorsqu’il trace ou écrit ;","Prendre des repères spatiaux sur le support utilisé pour tracer."],"4+":["Adopter une posture adaptée au geste d’écriture.","Adopter une préhension correcte du stylo et s’entrainer à ne pas le lever en écrivant.","Utiliser de façon coordonnée les quatre articulations qui servent à tenir et guider le crayon (épaule, coude, poignet, doigts).","Tracer des lettres capitales.","S’initier aux tracés de l’écriture cursive."],"5+":["Tenir correctement son stylo par la pince des doigts et utiliser de façon coordonnée les quatre articulations (épaule, coude, poignet, doigts).","Travailler la ligature entre deux lettres.","Tracer des lettres en écriture cursive, les enchainer."]}},{"nom":"Produire de premiers écrits","ages":{"<4":["Percevoir que l’écrit encode l’oral.","Utiliser un support écrit connu.","Mimer la posture et les gestes d’écriture de l’adulte lors de la production de traces qui s’apparentent à de l’écriture.","Tracer volontairement des signes abstraits dont on comprend qu’il ne s’agit pas de dessins, mais de lettres."],"4+":["Comprendre que lorsque l’adulte lit un même écrit plusieurs fois, ce qu’il lit est toujours identique.","Comprendre que l’écrit code des sons.","Proposer au professeur, lors d’une activité de dictée à l’adulte, le contenu d’un court message, stabiliser un énoncé oral et le mémoriser pour pouvoir ensuite le dicter au professeur.","Comparer la longueur d’un texte écrit et la durée du texte entendu.","Savoir que le sens de la lecture est de gauche à droite et de haut en bas.","Chercher parmi les outils à sa disposition des modèles qui seront réutilisés dans un essai d’écriture."],"5+":["Segmenter l’oral en mots, les mots en syllabes, quelques syllabes en phonèmes.","Comprendre que l’écrit encode l’oral et que les sons de la langue sont codés par des lettres.","Suivre la trace écrite des yeux lors d’une relecture par l’adulte d’un message produit lors d’une dictée à l’adulte.","Mémoriser la graphie d’un mot transparent, en s’appuyant sur la connaissance des lettres et la conscience phonologique et le retranscrire sur un support.","Réinvestir ses premières connaissances relatives au principe alphabétique pour produire un écrit.","Se repérer dans l’alphabet pour retrouver l’écriture d’une lettre nécessaire pour produire un écrit.","Mémoriser l’écriture de mots transparents ou de syllabes connues pour les réutiliser dans une production d’écrit.","Comprendre qu’il existe une norme pour écrire : ponctuation, majuscules, mise en page, etc.","Persévérer pour mener la production d’écrit à son terme : préparation, énonciation et révision."]}}]}]},{"nom":"Agir, s’exprimer, comprendre à travers les activités physiques","sous":[{"nom":"Se déplacer","groupes":[{"nom":"Manipuler, courir, sauter, lancer, s’orienter","ages":{"<4":["Manipuler et lancer des objets avec des intentions motrices différentes.","Courir de manière variée et coordonnée.","Sauter sans élan un obstacle.","Se situer dans un espace proche et connu en utilisant des indices présents dans l’environnement."],"4+":["Lancer loin de manière coordonnée.","Courir vite en ligne droite sur une distance ou une durée courte.","Sauter sans élan plusieurs obstacles.","Se situer dans un espace élargi et connu grâce à des indices prélevés dans l’environnement."],"5+":["Lancer loin et avec précision différents objets.","Courir de plus en plus longtemps sans s’arrêter.","Courir vite et franchir un obstacle sur une distance courte.","Coordonner ses actions et ses déplacements pour lancer et pour sauter haut ou loin.","Se situer dans un milieu moins connu grâce à des indices prélevés dans l’environnement."]}}]},{"nom":"Construire des équilibres","groupes":[{"nom":"Tourner, se suspendre, se renverser, grimper, rouler, glisser, nager","ages":{"<4":["Développer de nouveaux équilibres par des modes de déplacement variés.","Développer de nouveaux équilibres dans des environnements de pratiques inhabituels et sécurisés."],"4+":["Développer de nouveaux équilibres par des déplacements impliquant une perte de repères habituels.","Comprendre l’intérêt des règles de sécurité dans des activités et environnements inhabituels."],"5+":["Construire de nouveaux équilibres par des déplacements impliquant une combinaison d’actions.","Explorer le milieu aquatique et développer une nouvelle locomotion dans l’eau.","Respecter les règles de sécurité pour soi et pour les autres."]}}]},{"nom":"S’exprimer avec son corps","groupes":[{"nom":"Explorer, s’exprimer, danser, observer","ages":{"<4":["Découvrir et explorer le mouvement comme vecteur d’expression.","Oser s’exprimer avec son corps seul et avec les autres en répondant à une consigne simple.","Observer pour produire et reproduire un ou plusieurs mouvements avec une intention d’expression."],"4+":["Découvrir et explorer le geste dansé.","Découvrir l’espace scénique.","Développer une posture de spectateur et de spectatrice actifs."],"5+":["Enrichir le geste dansé par de nouvelles coordinations motrices, issues également des arts du cirque.","Explorer l’ensemble de l’espace scénique en variant les inducteurs (objets, mondes sonores, modes de déplacements, etc.) pour créer des effets.","Danser, seul ou à plusieurs, en créant et en reproduisant un ou plusieurs gestes et déplacements.","Adopter une posture de spectateur et de spectatrice actifs."]}}]},{"nom":"Coopérer et s’opposer","groupes":[{"nom":"Coopérer, s’opposer, respecter","ages":{"<4":["Comprendre et s’approprier un rôle dans les formes de jeu les plus simples.","Explorer différents jeux moteurs vécus en interindividuel ou en collectif.","Éprouver le plaisir de jouer dans le respect des autres et des règles communes."],"4+":["Jouer en coopérant.","Jouer en exerçant des rôles différents : attaquant, attaquante et défenseur, défenseuse.","Coopérer dans le respect des autres et des règles communes."],"5+":["Élaborer seul ou à plusieurs des stratégies pour gagner un jeu.","Jouer en exerçant des rôles différents : attaquant, attaquante, défenseur, défenseuse et arbitre.","Éprouver le plaisir de coopérer et de s’opposer dans le respect des autres et des règles communes."]}}]}]},{"nom":"Agir, s’exprimer, comprendre à travers les activités artistiques","sous":[{"nom":"Arts visuels","groupes":[{"nom":"Dessiner","ages":{"<4":["S’exercer au dessin pour développer son habileté motrice.","S’exercer progressivement au dessin avec une intention de représentation."],"4+":["Expérimenter la diversité des outils, des supports, des matériaux et faire des choix.","S’exercer au dessin avec une intention de représentation."],"5+":["Dessiner pour représenter sur la base d’un modèle.","Dessiner pour représenter un personnage ou un évènement fictif.","Participer à la réalisation d’une œuvre collective à partir d’une consigne ou d’un problème à résoudre.","Utiliser le vocabulaire spécifique au dessin."]}},{"nom":"S’exercer au graphisme artistique","ages":{"<4":["Explorer des gestes et commencer à les associer à des types de tracés précis.","Repérer des motifs graphiques issus de son environnement proche.","Découvrir des expressions graphiques dans des œuvres d’art."],"4+":["Exercer et développer sa motricité fine.","Repérer des motifs graphiques issus de son environnement.","Reproduire et créer des motifs de plus en plus élaborés."],"5+":["Transformer ou détourner des motifs du répertoire de la classe pour observer les effets produits.","Créer de nouveaux motifs.","Réaliser une composition à partir de plusieurs contraintes."]}},{"nom":"Réaliser des compositions planes ou en volume","ages":{"<4":["Explorer l’usage des outils et observer leurs effets sur le geste.","Utiliser différents médiums et observer leurs effets sur les couleurs, les formes et les volumes.","Expérimenter la résistance de certains matériaux.","Réaliser individuellement ou collectivement une production plastique en volume."],"4+":["S’approprier les constituants plastiques (couleurs, formes, matières, rythmes, etc.).","Réaliser une composition en deux ou trois dimensions en fonction d’un projet individuel ou collectif.","Découvrir différentes formes d’expression artistique."],"5+":["Réaliser des compositions plastiques, seul ou en petit groupe, en choisissant et combinant des matériaux et en réinvestissant des techniques et des procédés.","Se familiariser avec différentes formes d’expression artistique."]}},{"nom":"Observer, comprendre et transformer des images","ages":{"<4":["Apprendre à regarder avec attention et à identifier des éléments visuels.","Découvrir quelques éléments constitutifs d’une illustration."],"4+":["Différencier une image fixe d’une image animée.","Fabriquer des images à partir d’images existantes.","Identifier et nommer des éléments graphiques d’une illustration."],"5+":["Différencier des types d’images (portrait, paysage, nature morte, etc.).","Identifier et nommer des éléments esthétiques d’une illustration."]}}]},{"nom":"Les univers sonores","groupes":[{"nom":"Jouer avec sa voix et acquérir un répertoire de comptines et de chansons","ages":{"<4":["Dépasser les usages courants de la voix.","Chanter en se faisant comprendre des autres.","Dire ou chanter au moins cinq comptines."],"4+":["Découvrir et explorer la richesse de sa voix.","Chanter en exprimant une émotion.","Dire ou chanter au moins huit comptines ou chants, en réinvestissant les comptines apprises l’année précédente."],"5+":["Développer et affirmer son inventivité avec sa voix.","Trouver sa place dans un collectif chantant.","Dire ou chanter au moins dix comptines ou chants, en réinvestissant ceux appris les années antérieures."]}},{"nom":"Explorer des instruments, utiliser les sonorités du corps","ages":{"<4":["Explorer les possibilités sonores de son corps, d’objets et d’instruments.","Découvrir les possibilités expressives de son corps, d’objets et d’instruments.","Observer et commenter ce que font les camarades de classe pour produire des sons avec leur corps, des objets et des instruments."],"4+":["Produire des sons à partir de son corps, d’objets et d’instruments.","Adapter son geste pour produire un son en fonction d’une consigne.","Reproduire un rythme simple collectivement."],"5+":["Explorer le lien entre le son et le geste.","Créer un paysage sonore en répondant à une consigne simple avec son corps, des objets ou des instruments.","Créer collectivement une production musicale."]}},{"nom":"Affiner son écoute","ages":{"<4":["Traduire la musique entendue en mouvements.","Développer une posture d’écoute."],"4+":["Traduire la musique entendue en mouvements et en mots.","Exprimer ses émotions après l’écoute d’un extrait musical.","Découvrir au moins deux œuvres musicales patrimoniales."],"5+":["Traduire la musique entendue en dessin.","Écouter une œuvre musicale patrimoniale pour repérer des éléments musicaux significatifs.","Connaitre au moins trois œuvres musicales patrimoniales."]}}]},{"nom":"Le spectacle vivant","groupes":[{"nom":"Pratiquer","ages":{"<4":["Découvrir différentes façons d’exprimer ses émotions par le corps.","Découvrir des rôles simples.","Découvrir le jeu dans une mise en scène collective."],"4+":["Se familiariser avec l’expression des émotions par le corps et la voix.","Se familiariser avec des rôles simples.","Se familiariser avec le jeu dans une mise en scène collective."],"5+":["Explorer des enchainements d’émotions par le corps et la voix.","Explorer des rôles simples.","Explorer le jeu dans une mise en scène collective."]}},{"nom":"Fréquenter et devenir spectateur et spectatrice","ages":{"<4":["Découvrir des œuvres adaptées.","Découvrir l’espace scénique."],"4+":["Se familiariser avec l’espace scénique.","Se familiariser avec des œuvres adaptées.","Rencontrer des artistes."],"5+":["Explorer l’espace scénique.","Explorer des œuvres adaptées.","Rencontrer des artistes et des professionnels."]}}]}]},{"nom":"L’acquisition des premiers outils mathématiques","sous":[{"nom":"Découvrir les nombres","groupes":[{"nom":"Exprimer une quantité par un nombre","ages":{"<4":["Comprendre qu’une quantité d’objets ne dépend ni de la nature de ces objets ni de leur organisation spatiale.","Comprendre que : • si on ajoute un objet à une collection, le nombre qui désigne sa quantité est le suivant dans la suite orale des noms des nombres ; • dans la suite orale des noms des nombres, chaque nombre s’obtient en ajoutant un au nombre précédent.","Dénombrer une collection d’objets (jusqu’à trois, voire quatre).","Constituer une collection (jusqu’à trois, voire quatre objets) d’un cardinal donné.","Comparer des quantités.","Composer et décomposer des nombres (deux, trois, voire quatre).","Manipuler et verbaliser des compositions et des décompositions de nombres. Cela permet d’installer le fait que, dans une composition, l’ordre ne compte pas ; ces compositions et décompositions permettent de dénombrer plus efficacement que par le comptage un à un.","Associer une quantité, le nom d’un nombre et une écriture chiffrée.","Connaitre la comptine numérique de un à six."],"4+":["Poursuivre la compréhension qu’une quantité d’objets ne dépend ni de leur nature ni de leur organisation spatiale.","Poursuivre la compréhension des faits suivants : • si on ajoute un objet à une collection, le nombre qui désigne sa quantité est le suivant dans la suite orale des noms des nombres ; • dans la suite orale des nombres, chaque nombre s’obtient en ajoutant un au nombre précédent.","Parcourir une collection en passant une et une seule fois par chacun de ses éléments.","Dénombrer une collection d’objets (jusqu’à six).","Constituer une collection d’un cardinal donné (jusqu’à six objets).","Comparer des quantités.","Composer et décomposer des nombres inférieurs ou égaux à six.","Manipuler et verbaliser des compositions et des décompositions de nombres. Cela permet d’installer le fait que, dans une composition, l’ordre ne compte pas ; ces compositions et décompositions permettent de dénombrer plus efficacement que par le comptage un à un.","Associer une quantité, le nom d’un nombre et une écriture chiffrée.","Écrire en chiffres les nombres de un à six.","Connaitre la comptine numérique de un à douze."],"5+":["Poursuivre la compréhension qu’une quantité d’objets ne dépend ni de la nature de ces objets ni de leur organisation spatiale.","Poursuivre la compréhension des faits suivants : • si on ajoute un objet à une collection, le nombre qui désigne sa quantité est le suivant dans la suite orale des noms des nombres ; • dans la suite orale des nombres, chaque nombre s’obtient en ajoutant un au nombre précédent.","Poursuivre les stratégies de parcours d’une collection en passant une et une seule fois par chacun de ses éléments.","Dénombrer une collection d’objets (jusqu’à dix, voire au-delà).","Constituer une collection d’un cardinal donné (jusqu’à dix, voire au- delà).","Comparer des quantités.","Composer et décomposer des nombres inférieurs ou égaux à dix, voire au-delà.","Manipuler et verbaliser des compositions et des décompositions de nombres. Cela permet d’installer le fait que, dans une composition, l’ordre ne compte pas.","Surcompter (c’est-à-dire compter de un en un à partir d’un nombre donné).","Associer une quantité, le nom d’un nombre et une écriture chiffrée.","Écrire en chiffres les nombres de un à dix.","Connaitre et utiliser la comptine numérique jusqu’à trente."]}},{"nom":"Exprimer un rang ou une position par un nombre","ages":{"4+":["Comprendre la notion de rang.","Déterminer l’effet d’un déplacement sur une position.","Se familiariser avec le début de la bande numérique."],"5+":["Comprendre la notion de rang d’un objet.","Déterminer l’effet d’un déplacement sur une position.","Comprendre le lien entre un ajout et un avancement et celui entre un retrait et un recul.","Construire la bande numérique jusqu’à dix."]}}]},{"nom":"Utiliser les nombres pour résoudre des problèmes","groupes":[{"nom":"","ages":{"<4":["Recherche du tout ou d’une partie dans un problème de parties-tout."],"4+":["Rechercher le tout ou une partie dans un problème de parties-tout.","Trouver une position finale à partir d’une position initiale et d’un déplacement sur une piste du type du jeu de l’oie ou sur la bande numérique.","Rechercher le tout dans un problème de groupements.","Rechercher la valeur d’une part dans un problème de partage équitable."],"5+":["Déterminer le tout ou une partie dans un problème de parties-tout (d’abord deux parties, puis éventuellement trois).","Déterminer la quantité d’objets ayant été ajoutée ou retirée à une collection à partir de ses quantités initiale et finale.","Déterminer la position finale (respectivement initiale) à partir de la position initiale (respectivement finale) et d’un déplacement sur une piste du type du jeu de l’oie ou sur la bande numérique.","Déterminer le cardinal d’une collection à partir de celui d’une autre collection et de l’écart entre les deux.","Déterminer le tout dans un problème de groupement d’objets.","Déterminer la valeur d’une part dans un problème de partage équitable (avec éventuellement un reste)."]}}]},{"nom":"Explorer les solides et les formes planes","groupes":[{"nom":"","ages":{"<4":["Reconnaitre, trier et classer des objets selon leur forme.","Percevoir l’invariance de la forme d’un objet par rapport aux déplacements qu’il peut subir.","Reproduire des assemblages de solides ou de formes planes."],"4+":["Reconnaitre et classer des solides (cube, boule, pyramide à base carrée, cylindre) et des formes géométriques planes (triangle, carré, disque).","Reproduire des assemblages de solides ou de formes planes (au maximum cinq)."],"5+":["Décrire quelques solides simples : cube, pavé, boule, pyramides à base carrée ou triangulaire, cylindre, cône.","Reconnaitre, trier et classer des formes géométriques planes, indépendamment d’autres critères comme la couleur, la taille, l’orientation.","Décrire et nommer quelques figures géométriques simples : carré, rectangle, triangle, disque.","Reproduire des assemblages de solides (au maximum cinq) et de formes planes (au maximum huit).","S’approprier la règle comme outil de tracé."]}}]},{"nom":"Explorer des grandeurs : la longueur, la masse","groupes":[{"nom":"La longueur","ages":{"<4":["Reconnaitre un objet de même longueur qu’un objet donné.","Comparer des objets selon leur longueur."],"4+":["Comparer directement des longueurs d’objets rectilignes et verbaliser le résultat.","Classer des objets rectilignes selon leur longueur.","Ordonner des objets rectilignes selon leur longueur et verbaliser le résultat."],"5+":["Comparer indirectement des longueurs d’objets rectilignes.","Ordonner des objets rectilignes selon leur longueur (au maximum cinq).","Produire un objet rectiligne de même longueur qu’un objet donné."]}},{"nom":"La masse","ages":{"4+":["Comparer les masses de deux objets."],"5+":["Ordonner les masses de trois objets. Verbaliser les résultats.","Reconnaitre l’égalité de deux masses et verbaliser le résultat."]}}]},{"nom":"Se familiariser avec les motifs organisés","groupes":[{"nom":"","ages":{"<4":["Mémoriser un motif répétitif très simple.","Reproduire un motif répétitif à l’identique."],"4+":["Mémoriser un motif répétitif simple.","Reconnaitre un motif répétitif à ses régularités.","Décrire oralement des motifs répétitifs simples de différentes natures, sans nécessairement recourir au vocabulaire spécialisé.","Prolonger l’amorce d’un motif répétitif et verbaliser la règle de prolongement utilisée."],"5+":["Repérer et décrire oralement la structure d’un motif évolutif (par exemple relevant de la transcription formelle ABAABBAAABBB).","Identifier la structure d’un motif répétitif ou évolutif indépendamment des éléments physiques qui le composent.","Créer des motifs de différentes natures."]}}]}]},{"nom":"Se repérer dans le temps et l’espace","sous":[{"nom":"Se repérer dans le temps","groupes":[{"nom":"","ages":{"<4":["Acquérir les premiers repères temporels.","Identifier les principaux moments d’une journée.","Connaitre quelques marqueurs temporels.","Aborder la notion de saison à partir de quelques faits observables."],"4+":["Énoncer le moment de la journée où l’on se situe.","Établir des jours qui servent de repères dans la semaine.","Savoir que la semaine est une suite de sept jours.","Employer le présent, le futur, le passé composé et commencer éventuellement à employer l’imparfait pour évoquer des évènements et les resituer dans le temps.","Approfondir la notion de saison par des observations sur la végétation et le climat."],"5+":["Situer un évènement dans la semaine.","Continuer à s’approprier les temps conjugués (futur simple et futur antérieur) et les jours pour situer les évènements dans la semaine et situer un évènement qui va se produire.","Énoncer la date.","Utiliser des mois qui servent de repères pour se situer dans l’année.","Nommer la plupart des mois de l’année.","Connaitre les saisons."]}},{"nom":"S’approprier la notion de chronologie","ages":{"<4":["Situer des moments de la journée les uns par rapport aux autres et commencer à utiliser le présent, le passé composé, le présent à valeur de futur proche.","Ordonner entre eux des moments rituels vécus.","Comprendre et restituer le déroulement d’évènements quotidiens au sein d’une histoire simple.","Se projeter dans l’action que l’on choisit d’effectuer.","Commencer à planifier deux activités."],"4+":["Restituer la chronologie des actions majeures d’une histoire simple.","Relater et expliquer une action, une procédure en utilisant de premiers connecteurs structurants afin d’inscrire les activités récurrentes de leur vie quotidienne dans le temps."],"5+":["Repérer les différentes étapes d’un processus ou d’un évènement vécu et les ordonner.","Repérer l’antériorité d’une action par rapport à une autre dans un scénario: imparfait, plus-que-parfait, imparfait du verbe « aller » à valeur de futur proche dans le passé.","Ordonner des évènements passés les uns par rapport aux autres, dans l’année scolaire.","Relater des évènements passés ou à venir qui indiquent la succession, l’antériorité, la postériorité et la simultanéité."]}},{"nom":"Construire la notion de durée","ages":{"<4":["Attendre avant d’obtenir ce que l’on souhaite.","Repérer le début et la fin d’une activité.","Connaitre quelques mots qui font référence à la durée."],"4+":["Percevoir que certaines durées sont stables.","Enrichir le répertoire de mots qui font référence à la durée."],"5+":["Commencer à utiliser les repères donnés par les professeurs pour organiser son activité dans un temps imparti.","Comparer des durées.","Comprendre progressivement qu’il existe un temps long, un passé très éloigné, des évènements antérieurs à notre propre vie."]}}]},{"nom":"Se repérer dans l’espace","groupes":[{"nom":"Faire l’expérience de l’espace","ages":{"<4":["Réaliser des constructions simples à partir de pièces solides ou de formes planes.","Orienter un objet ou une forme.","Manipuler des objets volumineux.","Orienter un livre ou un autre support d’écrit.","Réaliser un trajet, un parcours simple dans l’école.","Expérimenter les effets sensoriels de la proximité et de l’éloignement.","Acquérir les premiers marqueurs qui permettent de se repérer dans l’espace."],"4+":["Réaliser des constructions de pièces solides ou de formes planes à partir d’une contrainte.","Situer des objets entre eux.","Situer des objets par rapport à soi, différencier la proximité de l’éloignement.","Orienter et utiliser correctement une feuille de papier.","Se situer par rapport aux autres.","Employer les marqueurs spatiaux précédemment acquis et en acquérir de nouveaux."],"5+":["Réaliser des assemblages complexes.","Situer des objets dans un ensemble ordonné.","Situer des objets par rapport à soi, construire une image orientée de son corps.","Réaliser un trajet, un parcours dans un environnement connu.","Utiliser une page en respectant les normes d’écriture.","Reconnaitre quelques espaces géographiques sur un planisphère.","Enrichir le lexique relatif à l’espace de mots plus complexes ou désignant un espace plus éloigné."]}},{"nom":"Représenter l’espace","ages":{"<4":["Reproduire un parcours simple.","Restituer un déplacement à l’aide de représentations diverses."],"4+":["Représenter un espace connu.","Restituer oralement un déplacement à partir d’une représentation.","Représenter un déplacement.","Composer et représenter divers éléments."],"5+":["Reproduire un parcours sur une représentation plane.","Représenter l’environnement proche.","Restituer oralement un déplacement mémorisé.","Représenter un déplacement.","Représenter la proximité ou l’éloignement d’un sujet.","Représenter divers éléments sur un plan."]}},{"nom":"Découvrir l’environnement proche","ages":{"<4":["Explorer les différents lieux de l’école et leur associer des éléments caractéristiques observés."],"4+":["Caractériser l’environnement extérieur proche de l’école.","Découvrir des espaces moins familiers."],"5+":["Reconnaitre les espaces proches de l’école et leurs usages.","Reconnaitre des espaces moins familiers.","Observer l’habitat proche de l’école."]}}]}]},{"nom":"Découvrir le monde du vivant, de la matière et des objets","sous":[{"nom":"Découvrir le monde du vivant","groupes":[{"nom":"Découvrir les animaux et les végétaux","ages":{"<4":["Repérer et nommer les caractéristiques morphologiques générales des plantes et des animaux observés avec la classe.","Reconnaitre et nommer le mâle et la femelle, le jeune et l'adulte pour plusieurs espèces animales.","Prodiguer des soins nécessaires aux élevages et aux cultures."],"4+":["Reconnaitre une ou plusieurs étapes d’un cycle de vie à partir de l’observation d’animaux et de plantes.","Identifier et décrire les besoins essentiels de quelques animaux et de végétaux à partir d'observations d'élevage, de cultures de plantes, et des soins prodigués.","Observer et nommer le mode de déplacement de quelques animaux en relation avec leur milieu de vie.","Respecter la vie sous toutes ses formes."],"5+":["Identifier des éléments morphologiques spécifiques à une espèce végétale ou animale.","Reconnaitre les étapes de la vie d'un animal ou d'une plante.","Décrire les besoins essentiels de quelques animaux ou de végétaux.","Contribuer à une action collective favorable à la préservation de la biodiversité dans un milieu proche de l’école."]}},{"nom":"Découvrir le corps humain et la santé","ages":{"<4":["Nommer et représenter quelques parties du corps humain.","Découvrir les sens utilisés lors d’expériences sensorielles variées.","Respecter quelques règles d’hygiène de vie, à l’invitation de l’adulte."],"4+":["Identifier et nommer les parties du corps humain.","Identifier et nommer des organes sensoriels et les modalités de perception associées.","Observer des changements liés à sa croissance.","Connaitre quelques règles d’hygiène corporelle et de propreté."],"5+":["Identifier et nommer quelques articulations et la segmentation des membres.","Se représenter avec un corps articulé en mouvement.","Connaitre quelques étapes de la vie d’un enfant jusqu’à six ans."]}}]},{"nom":"Découvrir le monde de la matière et des objets","groupes":[{"nom":"Découvrir les objets et les matériaux","ages":{"<4":["Reconnaitre et comparer des matériaux usuels à partir de perceptions sensorielles.","Repérer des transformations de matériaux sous l’effet d’actions mécaniques avec les mains ou avec des outils.","Utiliser des objets, connaitre leur nom et leur fonction.","Réaliser une construction, fabriquer un objet librement ou par un guidage pas à pas."],"4+":["Différencier des matériaux en fonction de leurs propriétés et différencier un objet du matériau qui le constitue.","Désigner et utiliser des outils ou des objets adaptés à une situation et à une action technique.","Réaliser une construction, fabriquer un objet à partir d’un modèle.","Reproduire quelques gestes respectueux de l’environnement montrés par l’adulte."],"5+":["Associer une solution technique à une fonction technique.","Fabriquer un objet en réponse à un besoin en exploitant des propriétés de matériaux ou des phénomènes physiques (équilibre, magnétisme, perméabilité, opacité ou transparence).","Explorer la notion de flottabilité avec des objets pleins constitués d’une seule et même matière : observer que, plongés dans l’eau, ils flottent tous ou coulent tous.","Construire, fabriquer, réaliser en suivant une recette ou une fiche technique.","Élaborer une suite d’instructions pour réaliser une tâche simple.","Identifier et prévenir les risques liés à certains objets."]}},{"nom":"Découvrir les états de la matière et les mélanges","ages":{"<4":["Explorer quelques caractéristiques des solides et des liquides.","Constater les effets d’un déplacement d’air sur des objets ou sur soi-même.","Réaliser et observer des mélanges.","Découvrir et observer la fusion et la solidification de l’eau."],"4+":["Identifier une condition favorable à la fusion de la glace.","Mettre en évidence la présence d’air en le mettant en mouvement.","Distinguer les solides qui se dissolvent dans l’eau de ceux qui ne se dissolvent pas."],"5+":["Identifier et nommer l’état de l’eau dans différentes situations.","Identifier la présence de l’air quand il est perceptible par les sens.","Distinguer, parmi quelques solides, ceux qui peuvent se dissoudre dans l’eau.","Commencer à agir de manière autonome pour le respect de l’environnement.","Prendre en compte les risques de l’environnement familier."]}}]}]},{"nom":"Éducation à la vie affective et relationnelle (EVAR)","sous":[{"nom":"Se connaître, vivre et grandir avec son corps","groupes":[{"nom":"Objectif d’apprentissage","ages":{"<4":["Connaître son corps et comprendre ce qu’est l’intimité."],"4+":["Connaître son corps et identifier des émotions."],"5+":["Connaître son corps, ses sensations et ses émotions."]}},{"nom":"Notions et compétences","ages":{"<4":["Nommer les différentes parties du corps.","Prendre conscience de ce qu’est l’intimité : les parties intimes du corps ; les espaces d’intimité ; les mots, les gestes et les conduites associés.","Développer sa connaissance de soi.","Identifier les espaces où chacune et chacun a droit à son intimité par rapport aux adultes et aux autres élèves."],"4+":["Nommer les différentes parties du corps.","Découvrir ce qu’est une grossesse et la naissance.","Découvrir et identifier ses émotions (quatre des émotions de base : joie, tristesse, peur, colère), ses sentiments et les reconnaître quand on les ressent."],"5+":["Identifier ses émotions et sentiments et celles des autres.","Prendre conscience de la différence de sensations selon les personnes et du fait qu’un même évènement n’engendre pas la même réaction chez tous.","Communiquer de façon efficace et constructive."]}},{"nom":"Propositions de démarches et d’activités","ages":{"<4":["Nommer, par exemple à partir d’albums ou de jouets, les différentes parties du corps, les nommer en partant des dénominations spontanées pour aller vers un vocabulaire scientifique.","S’approprier la notion d’intimité à partir de différentes situations de la vie quotidienne, relatives par exemple à l’habillage-déshabillage (toilette, consultation médicale, à l’école) ou dans des albums traitant de ces situations."],"4+":["Repérer et nommer, à partir d’imagiers ou de planches dessinées, les différentes parties du corps, les ressemblances et les différences physiques entre les filles et les garçons.","Découvrir ce qu’est une grossesse et la naissance, en particulier à l’occasion de la naissance d’un enfant dans l’entourage de la classe et en partant des représentations des élèves.","Lors des parcours de motricité : exprimer sa peur de monter ou de descendre, sa joie de réussir, le plaisir d’essayer (et accepter de se tromper).","À partir de saynètes, d’albums, de productions écrites ou dessinées, nommer et décrire les émotions des personnages à la lecture des expressions de leur visage."],"5+":["À partir d’œuvres d’art comme des photos ou des tableaux, reconnaître ou dessiner un personnage joyeux ou triste pour identifier les manifestations physiques des émotions.","Mimer, recréer les expressions de son camarade en lien avec des émotions.","Apprendre à s’exprimer par des messages clairs, en particulier dans le champ des émotions. Lors d’une situation de conflit, participer à un temps pour exprimer clairement ses émotions dans le respect de l’autre.","Découvrir différents sens (voir, entendre, goûter, sentir, toucher), nommer son ressenti, l’exprimer à l’oral ou à l’écrit et observer que les réactions peuvent ne pas être les mêmes chez tous.","Apprendre à repérer les adultes qui seraient capables d’apporter de l’aide en cas de difficulté."]}}]},{"nom":"Rencontrer les autres et construire des relations, s’y épanouir","groupes":[{"nom":"Objectif d’apprentissage","ages":{"<4":["Apprendre à exprimer son accord ou son refus, apprendre à envisager et à respecter un refus."],"4+":["Identifier une personne de confiance (adulte, enfant), apprendre à faire appel à eux."],"5+":["Identifier différents types de sentiments dans sa relation à l’autre."]}},{"nom":"Notions et compétences","ages":{"<4":["Développer la capacité de s’affirmer par le consentement et le refus.","Développer la capacité de respecter le refus de l’autre."],"4+":["Définir la notion de confiance.","Définir un adulte de confiance comme étant un adulte à qui on peut parler et qui est susceptible d’apporter une aide et avec qui on se sent bien (école, famille, environnement médical, sportif, etc.).","Identifier un adulte de confiance.","Savoir qu’il existe des comportements interdits même avec un adulte de confiance.","Distinguer ce que l’on peut garder pour soi ou entre enfants (un secret), d’une situation de danger ou de violence qu’il est important de partager avec un adulte de confiance.","Renforcer son attention à ses sensations.","Savoir demander de l’aide pour soi ou pour les autres."],"5+":["Identifier différents types de sentiments (par exemple, l’amitié, l’amour).","Définir et prendre conscience de ce qu’est l’amitié.","Développer des liens sociaux positifs (par exemple, aller vers l’autre, entrer en relation, nouer des amitiés)."]}},{"nom":"Propositions de démarches et d’activités","ages":{"<4":["Apprendre à associer un geste à un mot simple (« non », « oui », « d’accord », « stop »), en particulier dans des situations qui nécessitent un contact physique (par exemple, « est-ce que je peux m’assoir à côté de toi ? »).","À partir de situations de la vie quotidienne, systématiser l’expression de son consentement ou son refus, ainsi que de son acceptation (avec les adultes et les élèves) : « Est-ce que je peux m’assoir à côté de toi ? » ; « Est-ce que je peux te prendre la main ? » ; « Est-ce que je peux te prendre dans mes bras pour te consoler ? » ; etc.","Au cours de séances d’activités physiques et artistiques : exprimer l’accord ou le désaccord par le geste et le déplacement à travers des rondes et jeux chantés et dansés ; effectuer une suite de mouvements et de déplacements sur la thématique consentement/refus, avec ou sans support musical."],"4+":["Décrire, à partir de la lecture d’albums sur des secrets, les émotions des personnages face au secret reçu, comprendre les motivations des créateurs du secret.","Découvrir qu’un secret ne doit pas faire de mal et que toute situation de malaise, de souffrance, de danger ne doit pas constituer un secret, mais doit être partagée avec un adulte de confiance. Prendre des exemples de secrets positifs (un poème, la fabrication d’un cadeau, d’une carte, etc.) et de situations qui nécessitent au contraire d’être signalées.","Créer collectivement une « marguerite des adultes de confiance », en s’appuyant sur les « marguerites » individuelles. Apprendre à repérer les adultes avec lesquels il est possible d’exprimer ses joies et ses peines, et qui seraient capables d’apporter de l’aide en cas de difficulté.","Explorer ce qui pourrait troubler cette confiance et provoquer un sentiment de malaise, de peur, etc.","Réfléchir aux changements possibles des personnes de confiance, si quelque chose fait peur ou met mal à l’aise dans la relation.","Apprendre à porter attention à ses sensations lors d’activités variées. Exprimer ensuite ce que l’on ressent, à l’oral ou à l’écrit.","Dans les situations de vie de la classe (difficulté face à une tâche à réaliser, conflit avec un autre élève, douleur, etc.), utiliser des outils ou des formules proposées par l’enseignant pour demander de l’aide ou aller dans un endroit de la classe défini comme « le coin de l’aide » (par exemple, lever une carte avec un symbole, dire « j’ai besoin d’aide », etc.)."],"5+":["Apprendre à définir sa relation aux autres et à exprimer les émotions qu’elle procure : une personne que j’aime bien ; une personne avec qui je suis à l’aise ; une personne qui m’écoute quand je parle ; une personne qui va toujours essayer de m’aider si j’ai un problème.","Décrire les composantes positives d’une relation à l’autre (par exemple, la confiance, l’échange, le respect, le soutien, l’empathie et l’entraide) et comment il est possible de les exprimer.","Expérimenter la notion de confiance au travers d’un jeu de motricité de type colin-maillard et exprimer ses ressentis (choix du partenaire, relation de confiance, émotions éventuelles).","Participer à des activités collaboratives ou coopératives avec d’autres élèves (y compris des élèves d’autres classes ou hors de son groupe d’amis), par exemple pour réaliser un parcours en motricité avec du matériel qu’il n’est pas possible de déplacer seul ou en jouant à des jeux de société collaboratifs. Exprimer, à l’oral ou à l’écrit, ce que l’on ressent quand on va demander quelque chose à quelqu’un qu’on connaît ou non.","Apprendre qu’il est possible de refuser une démarche ou une action sans remettre en question des liens d’amitié.","Lors de conflits, utiliser un « message clair » permettant d’exprimer dans un cadre choisi et expliqué à l’autre la contrariété vécue par l’un face au comportement de l’autre."]}}]},{"nom":"Trouver sa place dans la société, y être libre et responsable","groupes":[{"nom":"Objectif d’apprentissage","ages":{"<4":["Appréhender et comprendre l’égalité entre les filles et les garçons et la liberté d’être soi-même."],"4+":["Vivre l’égalité entre les filles et les garçons. Découvrir les différentes structures familiales et les respecter."],"5+":["Découvrir les ressemblances et les différences entre les autres et soi, respecter les autres dans leur différence ; être respecté par eux."]}},{"nom":"Notions et compétences","ages":{"<4":["Comprendre qu’une activité ou un métier peuvent être choisis indifféremment par les filles ou les garçons, en fonction des compétences requises et de l’envie de l’exercer."],"4+":["Prendre conscience qu’il est possible d’acquérir et de développer des compétences diversifiées, quel que soit son sexe.","Appréhender, comprendre et respecter les différentes structures familiales à partir de ce que l’élève a observé dans son environnement proche à cet âge.","Développer des liens sociaux (aller vers l’autre, entrer en relation, etc.)."],"5+":["Identifier les ressemblances et les différences physiques entre les filles et les garçons.","Décrire ce que signifie traiter quelqu’un avec respect et identifier les effets de ses paroles et de ses actes sur les autres.","Développer l’empathie et des relations sociales constructives (comportements tels que la collaboration, la coopération, l’entraide)."]}},{"nom":"Propositions de démarches et d’activités","ages":{"<4":["Lors d’une activité d’expression orale à partir d’un album jeunesse, ou d’activités menées en classe, comprendre que le choix d’une activité et les goûts ne sont pas prédéterminés par le fait d’être une fille ou un garçon.","Choisir parmi de nombreuses illustrations de métiers/activités/sports celles qu’on aime, qu’on voudrait faire et celles qu’on n’aime pas et que l’on n’aimerait pas faire ; expliquer les choix à l’oral ou à l’écrit.","Participer à des activités de classement et des jeux de la classe pour exprimer ses goûts (j’aime/je n’aime pas), réaliser une affiche avec les jeux préférés dans la classe et comprendre que ces jeux ne sont pas réservés aux filles ou aux garçons.","Décrire et échanger à partir de la lecture d’albums ou d’imagiers en explicitant les assignations de rôle et les stéréotypes perceptibles."],"4+":["Participer à des activités qui permettent de s’épanouir, par exemple à travers l’utilisation mixte, ouverte et proposée à tous, de tous les espaces de jeux (coin cuisine, garage, bricolage, déguisement), la participation aux activités artistiques et physiques, l’utilisation de matériel aux couleurs variées.","Décrire sa famille et son environnement proche (par exemple avec un support comme le cahier de vie de l’élève).","Lire des albums sur le thème : « Qu’est-ce qu’une famille ? ». Observer différents types de famille (images, photographies, récits). Parler de sa famille avec d’autres élèves."],"5+":["À partir d’albums de littérature jeunesse, identifier des ressemblances et des différences entre les personnages, les décrire sous la forme d’un texte.","Proposer et pratiquer des actions qui favorisent l’égalité entre les filles et les garçons, par exemple à propos de la répartition des espaces de cour disponibles et des jeux collectifs qui y sont menés.","À partir d’une image ou d’une photographie : décrire ce que ressentent les différents personnages, écrire un dialogue imaginaire entre les personnages, exprimant leurs pensées et émotions.","Participer à des jeux et activités collaboratifs ou coopératifs (jeux de société, co-construction)."]}}]}]}];
+var DOMC = ['#e0792f', '#3a9a5b', '#8a5cc2', '#3b78c9', '#c99a14', '#2a9aa0', '#d65f8e'];
+var MINEC = '#6b7a80';
+var PALETTE = ['#e0792f', '#3a9a5b', '#8a5cc2', '#3b78c9', '#c99a14', '#2a9aa0', '#d65f8e', '#6b7a80'];
+var AGES = [['<4', 'Avant 4 ans'], ['4+', 'À partir de 4 ans'], ['5+', 'À partir de 5 ans']];
+var LEVEL_AGE = { PS: '<4', MS: '4+', GS: '5+' };
+var TAGS = [['classe', 'Classe', '#3b78c9'], ['equipe', 'Équipe', '#3a9a5b'], ['familles', 'Familles', '#e0792f'], ['admin', 'Administratif', '#8a5cc2'], ['perso', 'Perso', '#d65f8e']];
+var KEY = 'cm-data';
+
+function $(s) { return document.querySelector(s); }
+function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function uid() { return Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-3); }
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function parseISO(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function addDays(s, n) { var d = parseISO(s); d.setDate(d.getDate() + n); return iso(d); }
+function fmtDate(s) { try { return new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(parseISO(s)); } catch (e) { return s; } }
+function fmtShort(s) { try { return new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short' }).format(parseISO(s)); } catch (e) { return s; } }
+function fmtWd(s) { try { return new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }).format(parseISO(s)); } catch (e) { return s; } }
+function hm(min) { min = Math.round(min || 0); var h = Math.floor(min / 60), m = min % 60; return h && m ? h + ' h ' + pad(m) : h ? h + ' h' : m + ' min'; }
+function clone(o) { return JSON.parse(JSON.stringify(o)); }
+function domColor(name) { for (var i = 0; i < PROG.length; i++) if (PROG[i].nom === name) return DOMC[i % DOMC.length]; return MINEC; }
+
+var BUILTIN = [
+  ['objectif', 'Objectif', 'long'], ['activites', 'Déroulement', 'long'], ['materiel', 'Matériel', 'long'], ['reussite', 'Critères de réussite', 'long'], ['realisation', 'Critères de réalisation', 'long'],
+  ['prerequis', 'Prérequis', 'long'], ['prolongement', 'Prolongement', 'long'],
+  ['institu', 'Institutionnalisation', 'long'], ['trace', 'Trace écrite', 'long'], ['diff', 'Différenciation', 'long'], ['orga', 'Organisation humaine', 'long']
+];
+function defaultMine() {
+  return [
+    { id: 'm1', d: 'Apprendre ensemble et vivre ensemble', s: 'Se construire en tant que personne singulière au sein d’un groupe', o: 'Entrer dans un rythme collectif : agir ou être attentif en même temps que les autres, prendre en compte des consignes collectives, coopérer.' },
+    { id: 'm2', d: 'Apprendre ensemble et vivre ensemble', s: 'Comprendre la fonction de l’école', o: 'Repérer les rôles des différents adultes, la fonction des espaces dans la classe, dans l’école et les règles qui s’y rattachent.' }
+  ];
+}
+function defaults() {
+  return {
+    v: 2,
+    fields: BUILTIN.map(function (b) { return { id: b[0], label: b[1], type: b[2], on: true, builtin: true }; }),
+    days: {}, bank: [], todo: [], comptines: [], templates: [], mine: defaultMine(),
+    cats: [
+      { id: 'apc', nom: 'APC (activités pédagogiques complémentaires)', total: 36, entries: [] },
+      { id: 'equipe', nom: 'Travail en équipe et relations avec les familles', total: 48, entries: [] },
+      { id: 'anim', nom: 'Animation pédagogique et formation', total: 18, entries: [] },
+      { id: 'conseil', nom: 'Conseils d’école', total: 6, entries: [] }
+    ]
+  };
+}
+var D;
+function fixData() {
+  var d0 = defaults();
+  ['bank', 'todo', 'comptines', 'templates', 'todoFolders', 'eleves', 'libFolders', 'libFiles'].forEach(function (k) { if (!Array.isArray(D[k])) D[k] = []; });
+  if (!Array.isArray(D.mine)) D.mine = d0.mine;
+  if (!D.mig3) {
+    var hasO = false;
+    D.fields.forEach(function (f) { if (f.id === 'objectif') hasO = true; if (f.id === 'activites' && /Activités/.test(f.label)) f.label = 'Déroulement'; });
+    if (!hasO) D.fields.unshift({ id: 'objectif', label: 'Objectif', type: 'long', on: true, builtin: true });
+    D.mig3 = true;
+  }
+  D.fields.forEach(function (f) { delete f.req; });
+  D.todo.forEach(function (t) { if (typeof t.est === 'number') t.est = t.est ? hm(t.est) : ''; });
+  D.v = 2;
+}
+function load() {
+  try { var r = localStorage.getItem(KEY); if (r) { D = JSON.parse(r); if (!D || !D.fields || !D.days || !D.cats) D = defaults(); } else D = defaults(); } catch (e) { D = defaults(); }
+  fixData();
+}
+var saveT = null;
+function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch (e) { /* ignoré */ } }
+function saveSoon() { clearTimeout(saveT); saveT = setTimeout(save, 250); }
+
+/* ---------- Fichiers (IndexedDB) ---------- */
+var _db = null;
+function idb() {
+  return new Promise(function (res, rej) {
+    if (_db) return res(_db);
+    var r = indexedDB.open('ma-classe-files', 1);
+    r.onupgradeneeded = function () { r.result.createObjectStore('f'); };
+    r.onsuccess = function () { _db = r.result; res(_db); };
+    r.onerror = function () { rej(r.error); };
+  });
+}
+function idbPut(id, blob) { return idb().then(function (db) { return new Promise(function (res, rej) { var t = db.transaction('f', 'readwrite'); t.objectStore('f').put(blob, id); t.oncomplete = res; t.onerror = function () { rej(t.error); }; }); }); }
+function idbGet(id) { return idb().then(function (db) { return new Promise(function (res, rej) { var q = db.transaction('f').objectStore('f').get(id); q.onsuccess = function () { res(q.result); }; q.onerror = function () { rej(q.error); }; }); }); }
+function idbDel(id) { return idb().then(function (db) { return new Promise(function (res) { var t = db.transaction('f', 'readwrite'); t.objectStore('f').delete(id); t.oncomplete = res; t.onerror = res; }); }).catch(function () {}); }
+
+var S = { tab: 'journal', date: iso(new Date()), blockId: null, itemId: null, msg: '', pick: null, sheet: null, bank: { kind: 'atelier', niv: '', dom: '', q: '' }, tdTag: 'classe', tdFolder: '', more: {}, eleveId: null, resTab: 'ateliers', libFolder: '', eq: '', eNiv: '', showDone: false, copySel: {}, copyMode: null, urls: {} };
+
+function dayOf(date, create) { var d = D.days[date]; if (!d && create) d = D.days[date] = { niveaux: ['PS', 'MS', 'GS'], note: '', blocks: [] }; return d; }
+function curBlock() { var d = dayOf(S.date); if (!d) return null; for (var i = 0; i < d.blocks.length; i++) if (d.blocks[i].id === S.blockId) return d.blocks[i]; return null; }
+function bankItem(id) { for (var i = 0; i < D.bank.length; i++) if (D.bank[i].id === id) return D.bank[i]; return null; }
+function seanceOf(sid) { var b = curBlock(); if (b) for (var i = 0; i < b.seances.length; i++) if (b.seances[i].id === sid) return b.seances[i]; return bankItem(sid); }
+function newSeance() { return { id: uid(), label: '', niveaux: [], obj: [], f: {} }; }
+function sortedBlocks(d) { return d.blocks.slice().sort(function (a, b) { return (a.time || '99:99') < (b.time || '99:99') ? -1 : 1; }); }
+function blockColor(b) { if (b.color) return b.color; for (var i = 0; i < b.seances.length; i++) if (b.seances[i].obj.length) return domColor(b.seances[i].obj[0].d); return '#2f6f73'; }
+function tagHTML(o) { return '<span class="tag"><i class="dot" style="background:' + domColor(o.d) + '"></i>' + esc(o.s) + (o.g && o.g !== 'Objectif d’apprentissage' ? ' › ' + esc(o.g) : '') + '</span>'; }
+
+/* ---------- Journal ---------- */
+var PRESETS = [['Accueil', 20, '#e0792f'], ['Regroupement', 20, '#8a5cc2'], ['Ateliers', 45, '#3b78c9'], ['Récréation', 20, '#3a9a5b'], ['Motricité / EPS', 30, '#2a9aa0'], ['Langage', 20, '#c99a14'], ['Collation', 15, '#d65f8e'], ['Rangement', 10, '#6b7a80'], ['Cantine', 60, '#6b7a80'], ['Sieste', 90, '#6b7a80']];
+var IC = {
+  cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+  tpl: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 10v10"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
+  prt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></svg>',
+  imp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>'
+};
+function mondayOf(ds) { var d = parseISO(ds), w = (d.getDay() + 6) % 7; return addDays(ds, -w); }
+function srcForCopy() {
+  var w = addDays(S.date, -7), a = dayOf(w);
+  if (a && a.blocks.length) return w;
+  for (var i = 1; i <= 21; i++) { var x = addDays(S.date, -i), dx = dayOf(x); if (dx && dx.blocks.length) return x; }
+  return '';
+}
+function weekHTML() {
+  var mon = mondayOf(S.date), today = iso(new Date()), names = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+  var h = '<div class="wk"><button type="button" class="nv" data-a="day" data-p="-7" aria-label="Semaine précédente">‹</button>';
+  for (var i = 0; i < 7; i++) {
+    var ds = addDays(mon, i), dd = dayOf(ds), has = dd && (dd.blocks.length || (dd.docs && dd.docs.length));
+    h += '<button type="button" class="wd' + (ds === S.date ? ' on' : '') + (ds === today ? ' td' : '') + (i > 4 ? ' we' : '') + '" data-a="goDay" data-p="' + ds + '" aria-label="' + esc(fmtDate(ds)) + '"><small>' + names[i] + '</small><b>' + parseISO(ds).getDate() + '</b>' + (has ? '<i></i>' : '') + '</button>';
+  }
+  return h + '<button type="button" class="nv" data-a="day" data-p="7" aria-label="Semaine suivante">›</button></div>';
+}
+function tJournal() {
+  if (S.blockId) return tBlock();
+  var d = dayOf(S.date), today = iso(new Date());
+  var dt = parseISO(S.date), mo = ''; try { mo = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(dt); } catch (e) { mo = ''; }
+  var dn = ''; try { dn = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }).format(dt); } catch (e) { dn = S.date; }
+  var h = '<div class="hd"><div class="grow"><div class="mo">' + esc(mo) + '</div><h1>' + esc(dn) + '</h1></div>';
+  if (S.date !== today) h += '<button type="button" class="chip" data-a="today" style="flex:none">Aujourd’hui</button>';
+  h += '<span class="ib" style="position:relative">' + IC.cal + '<input type="date" id="jump" value="' + esc(S.date) + '" aria-label="Choisir une date" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;min-height:0;padding:0;border:0"></span></div>';
+  h += weekHTML();
+  var nv = d ? d.niveaux : ['PS', 'MS', 'GS'];
+  h += '<div class="lv"><span class="muted small">Niveaux</span>';
+  ['PS', 'MS', 'GS'].forEach(function (n) { h += '<button type="button" class="chip' + (nv.indexOf(n) >= 0 ? ' on' : '') + '" data-a="dayLevel" data-p="' + n + '">' + n + '</button>'; });
+  h += '</div>';
+  var bl = d ? sortedBlocks(d) : [], src = srcForCopy();
+  if (!bl.length) {
+    h += '<div class="card empty">' + IC.sun + '<h2 style="margin:8px 0 4px">Journée vide</h2><p class="muted small">Pars d’une base, ou ajoute tes moments un par un ci-dessous.</p><div class="stack">';
+    if (src) h += '<button type="button" class="btn" data-a="copyFrom" data-p="' + src + '">Reprendre le ' + esc(fmtWd(src)) + '</button>';
+    h += '<button type="button" class="btn secondary" data-a="tplOpen">Utiliser une journée type</button></div></div>';
+  }
+  bl.forEach(function (b) {
+    var col = blockColor(b), seen = [], tags = '';
+    b.seances.forEach(function (s) { s.obj.forEach(function (o) { if (seen.indexOf(o.s) < 0) seen.push(o.s); }); });
+    seen.slice(0, 2).forEach(function (n) { tags += '<span>' + esc(n) + '</span>'; });
+    if (seen.length > 2) tags += '<span>+' + (seen.length - 2) + '</span>';
+    if (b.seances.length > 1) tags += '<span>' + b.seances.length + ' groupes</span>';
+    var e = endTime(b);
+    h += '<div class="mrow"><button type="button" class="mcard" data-a="openBlock" data-p="' + b.id + '"><span class="mt" style="border-right-color:' + col + ';background:' + col + '22"><b style="color:' + col + '">' + esc(b.time || '--:--') + '</b>' + (e ? '<span>' + esc(e) + '</span>' : '') + '</span><span class="mb"><strong>' + esc(b.titre || 'Sans titre') + '</strong>' + (tags ? '<span class="tg">' + tags + '</span>' : '') + '</span>' + (b.duree ? '<span class="dur">' + esc(hm(b.duree)) + '</span>' : '') + '</button><button type="button" class="xb" data-a="delBlockList" data-p="' + b.id + '" aria-label="Supprimer ce moment">✕</button></div>';
+  });
+  h += '<div class="sec">Ajouter un moment</div><div class="qa">';
+  PRESETS.forEach(function (p, i) { h += '<button type="button" data-a="quick" data-p="' + i + '" style="background:' + p[2] + '">+ ' + esc(p[0]) + '</button>'; });
+  h += '<button type="button" data-a="addBlock" style="background:var(--accent);color:var(--accent-ink)">+ Autre</button></div>';
+  h += '<div class="tiles"><button type="button" class="tile" data-a="tplOpen">' + IC.tpl + 'Journées types</button>';
+  h += bl.length ? '<button type="button" class="tile" data-a="copyOpen" data-p="day">' + IC.copy + 'Copier vers d’autres jours</button>' : (src ? '<button type="button" class="tile" data-a="copyFrom" data-p="' + src + '">' + IC.copy + 'Reprendre le ' + esc(fmtWd(src)) + '</button>' : '');
+  if (bl.length && !NATIVE) h += '<button type="button" class="tile" data-a="printDay">' + IC.prt + 'Imprimer / PDF</button>';
+  h += '<label class="tile" for="dayimp" style="cursor:pointer">' + IC.imp + 'Importer un PDF ou une photo</label></div>';
+  h += '<input type="file" id="dayimp" multiple accept="application/pdf,image/*,.pdf,.png,.jpg,.jpeg,.heic" style="display:none"><div id="daymsg" class="small" role="status"></div>';
+  var docs = d && d.docs ? d.docs : [];
+  if (docs.length) {
+    h += '<div class="sec">Documents du jour</div>';
+    docs.forEach(function (x) { h += '<div class="card" style="padding:10px 12px"><div class="row"><div class="grow" style="min-width:0"><strong style="word-break:break-word">' + esc(x.nom) + '</strong><div class="muted small">' + esc(fsize(x.size || 0)) + '</div></div><button type="button" class="btn small" data-a="dayDocView" data-p="' + x.id + '">Ouvrir</button><button type="button" class="link" style="color:var(--danger)" data-a="dayDocDel" data-p="' + x.id + '">Retirer</button></div></div>'; });
+    h += '<p class="hint">Un document importé se consulte mais ne se modifie pas.</p>';
+  }
+  h += '<div class="sec">Remarques de la journée</div><textarea id="daynote" data-bind="d:note" aria-label="Remarques de la journée" placeholder="Matériel général, rappels…">' + esc(d ? d.note : '') + '</textarea>';
+  return h;
+}
+
+function oneField(s, f) {
+  var id = 'f' + s.id + f.id, v = s.f[f.id] || '', h = '';
+  if (f.type === 'check') h += '<label class="row" style="font-weight:500"><input type="checkbox" data-bind="s:' + s.id + ':f:' + f.id + ':c"' + (v ? ' checked' : '') + ' style="width:22px;height:22px"> ' + esc(f.label) + '</label>';
+  else if (f.type === 'short') h += '<label for="' + id + '">' + esc(f.label) + '</label><input type="text" id="' + id + '" data-bind="s:' + s.id + ':f:' + f.id + '" value="' + esc(v) + '">';
+  else {
+    h += '<label for="' + id + '">' + esc(f.label) + '</label><textarea id="' + id + '" data-bind="s:' + s.id + ':f:' + f.id + '">' + esc(v) + '</textarea>';
+    if (f.id === 'diff') h += '<p class="hint">Pour protéger les élèves, écris seulement des prénoms ou des initiales.</p>';
+  }
+  return h;
+}
+function fieldsHTML(s) {
+  var on = D.fields.filter(function (f) { return f.on; }), main = on.slice(0, 3), rest = on.slice(3), h = '';
+  main.forEach(function (f) { h += oneField(s, f); });
+  if (rest.length) {
+    var filled = rest.filter(function (f) { return s.f[f.id]; }).length, open = S.more[s.id] || filled > 0;
+    if (open) rest.forEach(function (f) { h += oneField(s, f); });
+    if (!S.more[s.id] && filled > 0) { /* ouvert car rempli */ }
+    var lab = open && S.more[s.id] ? 'Masquer les autres champs' : open ? '' : 'Plus de champs (' + rest.length + ')';
+    if (lab) h += '<button type="button" class="more" data-a="moreTog" data-p="' + s.id + '">' + lab + '</button>';
+  }
+  return h;
+}
+function objHTML(s) {
+  var h = '<h3>Objectifs du programme</h3>';
+  if (!s.obj.length) h += '<p class="muted small">Aucun objectif choisi.</p>';
+  s.obj.forEach(function (o, k) {
+    h += '<div class="row" style="align-items:flex-start;margin-bottom:6px"><div class="grow">' + tagHTML(o) + '<div class="small" style="white-space:pre-line">' + esc(o.o.replace(/ • /g, '\n• ')) + '</div></div><button type="button" class="link" data-a="rmObj" data-p="' + s.id + '" data-q="' + k + '" aria-label="Retirer cet objectif">Retirer</button></div>';
+  });
+  return h + '<button type="button" class="btn secondary small" data-a="pickOpen" data-p="' + s.id + '">Choisir dans le programme</button>';
+}
+function levelsHTML(s) {
+  var h = '<label>Niveaux concernés</label><div class="row wrap">';
+  ['PS', 'MS', 'GS'].forEach(function (n) { h += '<button type="button" class="chip' + (s.niveaux.indexOf(n) >= 0 ? ' on' : '') + '" data-a="seLevel" data-p="' + s.id + '" data-q="' + n + '">' + n + '</button>'; });
+  return h + '</div>';
+}
+
+function durChips(kind, cur) {
+  var h = '<div class="row wrap">';
+  [5, 10, 15, 20, 30, 45, 60].forEach(function (m) { h += '<button type="button" class="chip' + (cur === m ? ' on' : '') + '" data-a="setDur" data-p="' + kind + '" data-q="' + m + '">' + m + ' min</button>'; });
+  return h + '</div>';
+}
+function toMin(t) { var m = /^(\d{1,2}):(\d{2})/.exec(t || ''); return m ? (+m[1]) * 60 + (+m[2]) : null; }
+function fromMin(n) { n = ((n % 1440) + 1440) % 1440; return pad(Math.floor(n / 60)) + ':' + pad(n % 60); }
+function endTime(b) { var t = toMin(b.time); return t != null && b.duree ? fromMin(t + b.duree) : ''; }
+function nextStart(d, skip) {
+  if (!d) return '';
+  var best = null;
+  d.blocks.forEach(function (b) { if (b.id === skip) return; var t = toMin(b.time); if (t == null) return; var e = t + (b.duree || 0); if (best == null || e > best) best = e; });
+  return best == null ? '' : fromMin(best);
+}
+function tBlock() {
+  var b = curBlock(); if (!b) { S.blockId = null; return tJournal(); }
+  var h = '<button type="button" class="link" data-a="backDay">‹ Retour à la journée</button>';
+  h += '<div class="card" style="border-top:6px solid ' + blockColor(b) + '"><div class="row"><div class="grow"><label for="btime" style="margin-top:0">Début</label><input type="time" id="btime" value="' + esc(b.time) + '" data-bind="b:time"></div><div class="grow"><label for="bfin" style="margin-top:0">Fin</label><input type="time" id="bfin" value="' + esc(endTime(b)) + '" data-bind="b:fin"></div></div><label for="bduree">Durée (minutes)</label><input type="number" id="bduree" inputmode="numeric" min="0" value="' + esc(b.duree || '') + '" data-bind="b:duree">';
+  h += '<label>Durée rapide</label>' + durChips('b', b.duree);
+  h += '<p class="hint" id="bhint">Fin du moment : ' + esc(endTime(b) || '—') + '</p>';
+  h += '<label for="btitre">Titre du moment</label><input type="text" id="btitre" value="' + esc(b.titre) + '" data-bind="b:titre" placeholder="Ex. : Regroupement, Ateliers, EPS…">';
+  h += '<label>Couleur</label><div class="row wrap"><button type="button" class="chip' + (!b.color ? ' on' : '') + '" data-a="bColor" data-p="">Auto</button>';
+  PALETTE.forEach(function (c) { h += '<button type="button" class="sw' + (b.color === c ? ' on' : '') + '" style="background:' + c + '" data-a="bColor" data-p="' + c + '" aria-label="Couleur"></button>'; });
+  h += '</div></div>';
+  b.seances.forEach(function (s, i) {
+    h += '<div class="seance"><div class="row"><h2 class="grow" style="margin:0">' + (b.seances.length > 1 ? 'Groupe ' + (i + 1) : 'Séance') + '</h2>';
+    if (b.seances.length > 1) h += '<button type="button" class="link" data-a="delSeance" data-p="' + s.id + '" style="color:var(--danger)">Supprimer</button>';
+    h += '</div>';
+    if (b.seances.length > 1) h += '<label for="lab' + s.id + '">Nom du groupe</label><input type="text" id="lab' + s.id + '" data-bind="s:' + s.id + ':label" value="' + esc(s.label) + '" placeholder="Ex. : Atelier lettres du prénom (ATSEM)">';
+    h += levelsHTML(s) + objHTML(s) + fieldsHTML(s);
+    h += '<div class="row wrap" style="margin-top:12px"><button type="button" class="btn secondary small" data-a="toBank" data-p="' + s.id + '">Ranger dans ma banque d’ateliers</button></div></div>';
+  });
+  h += '<div class="stack"><button type="button" class="btn secondary" data-a="addSeance">Ajouter un groupe (autre niveau, ATSEM…)</button><button type="button" class="btn secondary" data-a="fromBank">Prendre un atelier de ma banque</button><button type="button" class="btn secondary" data-a="dupBlock">Dupliquer ce moment</button><button type="button" class="btn secondary" data-a="copyOpen" data-p="block">Copier ce moment vers d’autres jours</button><button type="button" class="btn danger" data-a="delBlock">Supprimer ce moment</button></div>';
+  h += '<div class="okbar"><button type="button" class="btn" data-a="backDay">✓ Valider le moment</button></div>';
+  return h;
+}
+
+/* ---------- Banque d'ateliers et rituels ---------- */
+function bankFiltered() {
+  var f = S.bank, q = f.q.trim().toLowerCase();
+  return D.bank.filter(function (it) {
+    if (it.kind !== f.kind) return false;
+    if (f.niv && it.niveaux.indexOf(f.niv) < 0) return false;
+    if (f.dom && !it.obj.some(function (o) { return o.d === f.dom; })) return false;
+    if (q && (it.titre || '').toLowerCase().indexOf(q) < 0) return false;
+    return true;
+  }).sort(function (a, b) { return (a.titre || '').localeCompare(b.titre || '', 'fr'); });
+}
+function bankListHTML() {
+  var list = bankFiltered(), h = '';
+  if (!list.length) return '<div class="card"><p>' + (D.bank.length ? 'Rien ne correspond à ces filtres.' : 'Ta banque est vide pour l’instant.') + '</p><p class="muted small">Crée un ' + (S.bank.kind === 'rituel' ? 'rituel' : 'atelier') + ' ici, ou range-en un depuis ton cahier journal avec « Ranger dans ma banque d’ateliers ».</p></div>';
+  list.forEach(function (it) {
+    var col = it.obj.length ? domColor(it.obj[0].d) : '#6b7a80', seen = [];
+    it.obj.forEach(function (o) { if (seen.indexOf(o.s) < 0) seen.push(o.s); });
+    var tags = ''; seen.slice(0, 2).forEach(function (n) { tags += '<span>' + esc(n) + '</span>'; }); if (seen.length > 2) tags += '<span>+' + (seen.length - 2) + '</span>';
+    h += '<button type="button" class="mcard" data-a="openItem" data-p="' + it.id + '" style="width:100%;margin:0 0 10px"><span class="mt" style="border-right-color:' + col + ';background:' + col + '22"><b style="color:' + col + ';font-size:15px">' + esc(it.niveaux.length ? it.niveaux.join('/') : '—') + '</b>' + (it.duree ? '<span>' + esc(hm(it.duree)) + '</span>' : '') + '</span><span class="mb"><strong>' + esc(it.titre || 'Sans titre') + '</strong>' + (tags ? '<span class="tg">' + tags + '</span>' : '') + '</span></button>';
+  });
+  return h;
+}
+function tBank() {
+  if (S.itemId) return tItem();
+  var f = S.bank;
+  var seg = '<div class="seg"><button type="button" class="' + (S.resTab === 'ateliers' ? 'on' : '') + '" data-a="resTab" data-p="ateliers">Ateliers et rituels</button><button type="button" class="' + (S.resTab === 'lib' ? 'on' : '') + '" data-a="resTab" data-p="lib">Bibliothèque</button></div>';
+  var hd0 = '<div class="mo">Ateliers et documents</div><h1 style="margin:2px 0 12px">Réserve</h1>';
+  if (S.resTab === 'lib') return hd0 + seg + tLib();
+  var h = hd0 + seg;
+  h += '<div class="seg"><button type="button" class="' + (f.kind === 'atelier' ? 'on' : '') + '" data-a="bKind" data-p="atelier">Ateliers</button><button type="button" class="' + (f.kind === 'rituel' ? 'on' : '') + '" data-a="bKind" data-p="rituel">Rituels</button></div>';
+  h += '<div class="seg">';
+  [['', 'Tous'], ['PS', 'PS'], ['MS', 'MS'], ['GS', 'GS']].forEach(function (n) { h += '<button type="button" class="' + (f.niv === n[0] ? 'on' : '') + '" data-a="bNiv" data-p="' + n[0] + '">' + n[1] + '</button>'; });
+  h += '</div><select id="bdom" aria-label="Domaine"><option value="">Tous les domaines</option>';
+  PROG.forEach(function (d) { h += '<option value="' + esc(d.nom) + '"' + (f.dom === d.nom ? ' selected' : '') + '>' + esc(d.nom) + '</option>'; });
+  h += '</select><div style="margin:8px 0 12px"><input type="search" id="bq" placeholder="Chercher par titre" value="' + esc(f.q) + '"></div>';
+  h += '<div id="banklist">' + bankListHTML() + '</div>';
+  h += '<button type="button" class="btn" style="margin-top:6px" data-a="itemNew">' + (f.kind === 'rituel' ? 'Nouveau rituel' : 'Nouvel atelier') + '</button>';
+  return h;
+}
+function tItem() {
+  var it = bankItem(S.itemId); if (!it) { S.itemId = null; return tBank(); }
+  var h = '<button type="button" class="link" data-a="backBank">‹ Retour à la banque</button>';
+  h += '<div class="card"><label for="ititre" style="margin-top:0">Titre</label><input type="text" id="ititre" data-bind="s:' + it.id + ':titre" value="' + esc(it.titre) + '" placeholder="Ex. : Quantité et écriture chiffrée">';
+  h += '<div class="row"><div class="grow"><label for="ikind">Type</label><select id="ikind" data-bind="s:' + it.id + ':kind"><option value="atelier"' + (it.kind === 'atelier' ? ' selected' : '') + '>Atelier</option><option value="rituel"' + (it.kind === 'rituel' ? ' selected' : '') + '>Rituel</option></select></div><div style="width:120px"><label for="iduree">Durée (min)</label><input type="number" id="iduree" inputmode="numeric" min="0" data-bind="s:' + it.id + ':duree" value="' + esc(it.duree || '') + '"></div></div>' + durChips('i', it.duree) + '</div>';
+  h += '<div class="seance">' + levelsHTML(it) + objHTML(it) + fieldsHTML(it) + '</div>';
+  h += '<div class="stack"><button type="button" class="btn" data-a="itemUse">Ajouter au cahier journal</button><button type="button" class="btn secondary" data-a="itemDup">Dupliquer</button><button type="button" class="btn danger" data-a="itemDel">Supprimer</button></div>';
+  h += '<div class="okbar"><button type="button" class="btn" data-a="backBank">✓ Valider</button></div>';
+  return h;
+}
+
+/* ---------- À faire ---------- */
+function tagOf(id) { for (var i = 0; i < TAGS.length; i++) if (TAGS[i][0] === id) return TAGS[i]; return TAGS[0]; }
+function folderName(id) { for (var i = 0; i < D.todoFolders.length; i++) if (D.todoFolders[i].id === id) return D.todoFolders[i].nom; return ''; }
+var ESTS = [5, 10, 15, 20, 30, 45, 60, 90, 120, 180];
+var ESTQ = ['15 min', '30 min', '1 h', '2 h', '1 jour', '2 jours', '1 semaine'];
+function estQuick(target) { var h = '<div class="row wrap" style="margin:6px 0 0;gap:6px">'; ESTQ.forEach(function (v) { h += '<button type="button" class="chip" style="min-height:34px;font-size:13.5px;padding:0 10px" data-a="estSet" data-p="' + v + '" data-q="' + target + '">' + v + '</button>'; }); return h + '</div>'; }
+function estParse(txt) {
+  var r = { min: 0, jours: 0, ok: false }, t = String(txt || '').toLowerCase().replace(',', '.');
+  var re = /(\d+(?:\.\d+)?)\s*(semaines?|sem|jours?|j|heures?|h|minutes?|min|mn)\b/g, m;
+  while ((m = re.exec(t))) { var n = parseFloat(m[1]), u = m[2]; r.ok = true; if (/^sem/.test(u)) r.jours += n * 5; else if (/^j/.test(u)) r.jours += n; else if (/^h/.test(u)) r.min += n * 60; else r.min += n; }
+  return r;
+}
+function estTotal(list) { var mi = 0, jo = 0; list.forEach(function (t) { var r = estParse(t.est); mi += r.min; jo += r.jours; }); var p = []; if (jo) p.push((Math.round(jo * 10) / 10 + '').replace('.', ',') + ' jour' + (jo > 1 ? 's' : '')); if (mi) p.push(hm(mi)); return p.join(' + '); }
+function openVisible() { var inF = function (t) { return !S.tdFolder || t.folder === S.tdFolder; }; return D.todo.filter(function (t) { return !t.done && inF(t); }); }
+function reorderVisible(ids) {
+  var cur = openVisible(), pos = cur.map(function (t) { return D.todo.indexOf(t); }), byId = {};
+  cur.forEach(function (t) { byId[t.id] = t; });
+  ids.forEach(function (id, k) { if (byId[id]) D.todo[pos[k]] = byId[id]; });
+}
+function todoRow(t) {
+  var tg = tagOf(t.tag), today = iso(new Date()), late = t.date && t.date < today && !t.done;
+  return '<div class="todo" style="border-left-color:' + tg[2] + '"><input type="checkbox" data-a="tdTog" data-p="' + t.id + '"' + (t.done ? ' checked' : '') + ' aria-label="Terminé"><button type="button" class="grow" data-a="tdEdit" data-p="' + t.id + '" style="all:unset;flex:1;cursor:pointer;min-width:0"><div class="' + (t.done ? 'done' : '') + '">' + esc(t.t) + '</div><div class="muted small"><i class="dot" style="background:' + tg[2] + '"></i>' + esc(tg[1]) + (t.folder && !S.tdFolder ? ' · ' + esc(folderName(t.folder)) : '') + (t.date ? ' · <span style="' + (late ? 'color:var(--danger);font-weight:600' : '') + '">' + esc(fmtShort(t.date)) + '</span>' : '') + (t.est ? ' · ⏱ ' + esc(t.est) : '') + '</div></button>' + (t.done ? '' : '<div class="mv"><button type="button" data-a="tdMove" data-p="' + t.id + '" data-q="-1" aria-label="Monter">▲</button><button type="button" data-a="tdMove" data-p="' + t.id + '" data-q="1" aria-label="Descendre">▼</button></div><button type="button" class="grip" data-grip="' + t.id + '" aria-label="Glisser pour changer l’ordre">⋮⋮</button>') + '</div>';
+}
+function tTodo() {
+  var today = iso(new Date());
+  var h = '<div class="mo">Organisation</div><h1 style="margin:2px 0 12px">À faire</h1>';
+  h += '<div class="row wrap" style="margin:6px 0 10px"><button type="button" class="chip' + (!S.tdFolder ? ' on' : '') + '" data-a="tdFolder" data-p="">Tous</button>';
+  D.todoFolders.forEach(function (f) { var n = D.todo.filter(function (t) { return t.folder === f.id && !t.done; }).length; h += '<button type="button" class="chip' + (S.tdFolder === f.id ? ' on' : '') + '" data-a="tdFolder" data-p="' + f.id + '">' + esc(f.nom) + (n ? ' (' + n + ')' : '') + '</button>'; });
+  h += '<button type="button" class="chip" data-a="tdFolderNew">+ Dossier</button></div>';
+  if (S.tdFolder) h += '<div style="margin:-4px 0 8px"><button type="button" class="link" data-a="tdFolderEdit" data-p="' + esc(S.tdFolder) + '">Renommer ou supprimer ce dossier</button></div>';
+  h += '<div class="card"><input type="text" id="tdnew" placeholder="Une chose à faire…" aria-label="Nouvelle tâche"><div class="row wrap" style="margin:10px 0">';
+  TAGS.forEach(function (t) { h += '<button type="button" class="chip' + (S.tdTag === t[0] ? ' on' : '') + '" data-a="tdTag" data-p="' + t[0] + '" style="' + (S.tdTag === t[0] ? 'background:' + t[2] + ';border-color:' + t[2] + ';color:#fff' : 'border-color:' + t[2]) + '">' + esc(t[1]) + '</button>'; });
+  h += '</div><label for="tdest" style="margin-top:0">Temps estimé (facultatif)</label><input type="text" id="tdest" placeholder="Écris ce que tu veux : 20 min, 2 jours…" value="' + esc(S.tdEst || '') + '">' + estQuick('tdest') + '<label for="tddate">Date (facultatif)</label><input type="date" id="tddate"><button type="button" class="btn" style="margin-top:10px" data-a="tdAdd">Ajouter à la liste</button></div>';
+  var inF = function (t) { return !S.tdFolder || t.folder === S.tdFolder; };
+  var open = D.todo.filter(function (t) { return !t.done && inF(t); }), done = D.todo.filter(function (t) { return t.done && inF(t); });
+  var tot = estTotal(open);
+  if (open.length) {
+    h += '<div class="sec">Par ordre de priorité · ' + open.length + (tot ? ' · ' + esc(tot) + ' estimés' : '') + '</div><p class="hint" style="margin:-4px 2px 8px">Change l’ordre avec ▲ ▼ ou en faisant glisser ⋮⋮</p><div id="tdlist">';
+    open.forEach(function (t) { h += todoRow(t); });
+    h += '</div>';
+  } else h += '<p class="muted" style="text-align:center">Rien à faire pour l’instant.</p>';
+  if (done.length) {
+    h += '<div class="row" style="margin-top:12px"><button type="button" class="link grow" style="text-align:left" data-a="tdShow">' + (S.showDone ? 'Cacher' : 'Voir') + ' les tâches terminées (' + done.length + ')</button>' + (S.showDone ? '<button type="button" class="link" data-a="tdClear">Effacer</button>' : '') + '</div>';
+    if (S.showDone) done.forEach(function (t) { h += todoRow(t); });
+  }
+  return h;
+}
+
+/* ---------- Élèves ---------- */
+function eleveOf(id) { for (var i = 0; i < D.eleves.length; i++) if (D.eleves[i].id === id) return D.eleves[i]; return null; }
+function elevesListHTML() {
+  var q = S.eq.trim().toLowerCase(), h = '';
+  var l = D.eleves.filter(function (e) { return (!S.eNiv || e.niveau === S.eNiv) && (!q || (e.prenom || '').toLowerCase().indexOf(q) >= 0); }).sort(function (a, b) { return (a.prenom || '').localeCompare(b.prenom || '', 'fr'); });
+  if (!l.length) return '<div class="card"><p>' + (D.eleves.length ? 'Aucun élève ne correspond.' : 'Aucun élève pour l’instant.') + '</p></div>';
+  l.forEach(function (e) {
+    var last = e.notes.length ? e.notes[e.notes.length - 1] : null;
+    h += '<button type="button" class="block" data-a="eOpen" data-p="' + e.id + '" style="border-left-color:' + ({ PS: '#e0792f', MS: '#3a9a5b', GS: '#3b78c9' }[e.niveau] || '#6b7a80') + '"><div class="row"><strong class="grow">' + esc(e.prenom || 'Sans prénom') + '</strong><span class="tag">' + esc(e.niveau || '—') + '</span></div>' + (last && last.txt ? '<div class="muted small" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(last.txt) + '</div>' : '') + '</button>';
+  });
+  return h;
+}
+function tEleves() {
+  if (S.eleveId) return tEleve();
+  var h = '<div class="mo">Ma classe</div><h1 style="margin:2px 0 6px">Élèves</h1><p class="muted">Un prénom, et tes notes libres.</p><p class="hint" style="margin:0 0 10px">Par protection, écris seulement des prénoms ou des initiales.</p>';
+  h += '<div class="seg">';
+  [['', 'Tous'], ['PS', 'PS'], ['MS', 'MS'], ['GS', 'GS']].forEach(function (n) { h += '<button type="button" class="' + (S.eNiv === n[0] ? 'on' : '') + '" data-a="eNiv" data-p="' + n[0] + '">' + n[1] + '</button>'; });
+  h += '</div><div style="margin:0 0 12px"><input type="search" id="eqq" placeholder="Chercher un prénom" value="' + esc(S.eq) + '"></div><div id="elist">' + elevesListHTML() + '</div>';
+  h += '<button type="button" class="btn" style="margin-top:6px" data-a="eNew">Ajouter un élève</button>';
+  return h;
+}
+function tEleve() {
+  var e = eleveOf(S.eleveId); if (!e) { S.eleveId = null; return tEleves(); }
+  var h = '<button type="button" class="link" data-a="eBack">‹ Retour aux élèves</button>';
+  h += '<div class="card"><label for="epre" style="margin-top:0">Prénom ou initiales</label><input type="text" id="epre" data-bind="e:' + e.id + ':prenom" value="' + esc(e.prenom) + '"><label>Niveau</label><div class="row wrap">';
+  ['PS', 'MS', 'GS'].forEach(function (n) { h += '<button type="button" class="chip' + (e.niveau === n ? ' on' : '') + '" data-a="eLevel" data-p="' + n + '">' + n + '</button>'; });
+  h += '</div></div><h2>Notes</h2><button type="button" class="btn" data-a="nAdd" style="margin-bottom:10px">Ajouter une note</button>';
+  if (!e.notes.length) h += '<p class="muted">Aucune note pour l’instant. Ex. : « n’a pas fait l’atelier peinture ».</p>';
+  e.notes.slice().reverse().forEach(function (n) {
+    h += '<div class="card"><div class="row"><span class="muted small grow">' + esc(fmtShort(n.date)) + '</span><button type="button" class="link" style="color:var(--danger)" data-a="nDel" data-p="' + n.id + '">Supprimer</button></div><textarea data-bind="n:' + e.id + ':' + n.id + '" aria-label="Note" placeholder="Ce que tu veux noter…">' + esc(n.txt) + '</textarea></div>';
+  });
+  h += '<button type="button" class="btn danger" style="margin-top:10px" data-a="eDel">Supprimer cet élève</button>';
+  h += '<div class="okbar"><button type="button" class="btn" data-a="eBack">✓ Valider</button></div>';
+  return h;
+}
+
+/* ---------- Bibliothèque ---------- */
+function libFolderOf(id) { for (var i = 0; i < D.libFolders.length; i++) if (D.libFolders[i].id === id) return D.libFolders[i]; return null; }
+function libFileOf(id) { for (var i = 0; i < D.libFiles.length; i++) if (D.libFiles[i].id === id) return D.libFiles[i]; return null; }
+function libPath(id) { var out = [], g = 0, f; while (id && (f = libFolderOf(id)) && g++ < 20) { out.unshift(f.nom); id = f.parent; } return out; }
+function libDesc(id) { var ids = [id]; D.libFolders.forEach(function () { D.libFolders.forEach(function (f) { if (ids.indexOf(f.parent) >= 0 && ids.indexOf(f.id) < 0) ids.push(f.id); }); }); return ids; }
+function fsize(n) { return n > 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' Mo' : Math.max(1, Math.round(n / 1024)) + ' Ko'; }
+function tLib() {
+  var cur = S.libFolder, h = '';
+  if (cur && !libFolderOf(cur)) cur = S.libFolder = '';
+  var path = libPath(cur);
+  if (cur) {
+    var par = libFolderOf(cur).parent || '';
+    h += '<button type="button" class="link" data-a="libOpenFolder" data-p="' + esc(par) + '">‹ ' + (par ? esc(libFolderOf(par).nom) : 'Bibliothèque') + '</button>';
+    h += '<div class="row"><h2 class="grow" style="margin:0">' + esc(path.join(' › ')) + '</h2><button type="button" class="link" data-a="libFolderEdit" data-p="' + esc(cur) + '">Modifier</button></div>';
+  } else h += '<p class="muted">Tes documents rangés par dossiers : programmations, fiches de préparation, images…</p>';
+  var subs = D.libFolders.filter(function (f) { return (f.parent || '') === cur; }).sort(function (a, b) { return a.nom.localeCompare(b.nom, 'fr'); });
+  var files = D.libFiles.filter(function (f) { return (f.folder || '') === cur; }).sort(function (a, b) { return a.nom.localeCompare(b.nom, 'fr'); });
+  h += '<div style="margin-top:10px">';
+  subs.forEach(function (f) {
+    var n = D.libFiles.filter(function (x) { return x.folder === f.id; }).length + D.libFolders.filter(function (x) { return x.parent === f.id; }).length;
+    h += '<button type="button" class="block" data-a="libOpenFolder" data-p="' + f.id + '" style="border-left-color:#c99a14"><div class="row"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#c99a14" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><strong class="grow">' + esc(f.nom) + '</strong><span class="muted small">' + n + ' élément' + (n > 1 ? 's' : '') + '</span></div></button>';
+  });
+  files.forEach(function (f) {
+    var img = /^image\//.test(f.mime || '');
+    h += '<div class="card" style="border-left:8px solid ' + (img ? '#3a9a5b' : '#3b78c9') + ';padding:10px 12px"><div class="row"><div class="grow"><strong style="word-break:break-word">' + esc(f.nom) + '</strong><div class="muted small">' + (img ? 'Image' : 'PDF') + ' · ' + esc(fsize(f.size || 0)) + ' · ' + esc(fmtShort(f.date)) + '</div></div><button type="button" class="btn small" data-a="libView" data-p="' + f.id + '">Ouvrir</button><button type="button" class="link" data-a="libEdit" data-p="' + f.id + '">Modifier</button></div></div>';
+  });
+  if (!subs.length && !files.length) h += '<div class="card"><p>' + (cur ? 'Ce dossier est vide.' : 'Ta bibliothèque est vide.') + '</p></div>';
+  h += '</div><div class="stack" style="margin-top:6px"><label class="btn" for="libimp" style="display:flex;align-items:center;justify-content:center;margin:0;cursor:pointer">Importer des documents (PDF, images)</label><input type="file" id="libimp" multiple accept="application/pdf,image/*,.pdf,.png,.jpg,.jpeg,.heic" style="display:none"><button type="button" class="btn secondary" data-a="libFolderNew">Nouveau dossier' + (cur ? ' ici' : '') + '</button></div><p class="hint">Les documents restent sur ce téléphone et ne sont pas inclus dans la sauvegarde.</p><div id="libmsg" class="small" role="status"></div>';
+  return h;
+}
+function libFolderOptions(sel, exclude) {
+  var h = '<option value="">Bibliothèque (racine)</option>';
+  D.libFolders.slice().sort(function (a, b) { return libPath(a.id).join('/').localeCompare(libPath(b.id).join('/'), 'fr'); }).forEach(function (f) { if (exclude && exclude.indexOf(f.id) >= 0) return; h += '<option value="' + f.id + '"' + (sel === f.id ? ' selected' : '') + '>' + esc(libPath(f.id).join(' › ')) + '</option>'; });
+  return h;
+}
+function libImport(files) {
+  var msg = $('#libmsg'); if (msg) msg.textContent = 'Enregistrement…';
+  var list = Array.prototype.slice.call(files), fail = 0;
+  list.reduce(function (p, f) {
+    return p.then(function () {
+      var id = 'L' + uid();
+      return idbPut(id, f).then(function () { D.libFiles.push({ id: id, folder: S.libFolder || '', nom: f.name.replace(/\.(pdf|png|jpe?g|heic)$/i, ''), mime: f.type || (/\.pdf$/i.test(f.name) ? 'application/pdf' : ''), size: f.size, date: iso(new Date()) }); }).catch(function () { fail++; });
+    });
+  }, Promise.resolve()).then(function () { save(); render(); var m2 = $('#libmsg'); if (m2 && fail) m2.textContent = fail + ' fichier(s) n’ont pas pu être enregistrés (place insuffisante ?).'; });
+}
+/* ---------- Comptines ---------- */
+function tComp() {
+  var h = '<div class="mo">Chants et comptines</div><h1 style="margin:2px 0 6px">Comptines du moment</h1><p class="muted">Un fichier audio ou vidéo, un lien, et les paroles en PDF.</p>';
+  var cur = D.comptines.filter(function (c) { return c.current; }), oth = D.comptines.filter(function (c) { return !c.current; });
+  function card(c) {
+    var x = '<div class="card"><div class="row" style="align-items:flex-start;gap:12px">' + coverHTML(c) + '<div class="grow" style="min-width:0"><div class="row"><h2 class="grow" style="margin:0">' + esc(c.titre || 'Sans titre') + '</h2><button type="button" class="link" data-a="compEdit" data-p="' + c.id + '">Modifier</button></div>';
+    var tg = ''; if (c.periode) tg += '<span class="tag">' + esc(c.periode) + '</span>'; (c.niveaux || []).forEach(function (n) { tg += '<span class="tag">' + n + '</span>'; });
+    if (tg) x += '<div style="margin-top:6px">' + tg + '</div>';
+    if (c.notes) x += '<p class="muted small" style="white-space:pre-wrap">' + esc(c.notes) + '</p>';
+    x += '<div class="row wrap">';
+    if (c.audioId) x += '<button type="button" class="btn secondary small" data-a="compPlay" data-p="' + c.id + '">' + (c.audioType === 'video' ? 'Voir la vidéo' : 'Écouter') + '</button>';
+    if (c.pdfId) x += '<button type="button" class="btn secondary small" data-a="compPdf" data-p="' + c.id + '">Paroles</button>';
+    if (c.lien) x += '<a class="btn secondary small" style="display:inline-flex;align-items:center;text-decoration:none" href="' + esc(c.lien) + '" target="_blank" rel="noopener">' + (/spotify\.com|spotify:/i.test(c.lien) ? 'Ouvrir dans Spotify' : /youtu/i.test(c.lien) ? 'Ouvrir sur YouTube' : 'Ouvrir le lien') + '</a>';
+    x += '</div></div></div><div id="pl-' + c.id + '"></div></div>';
+    return x;
+  }
+  if (cur.length) { h += '<h3>En ce moment</h3>'; cur.forEach(function (c) { h += card(c); }); }
+  if (oth.length) { h += '<h3>Les autres</h3>'; oth.forEach(function (c) { h += card(c); }); }
+  if (!D.comptines.length) h += '<div class="card"><p>Aucune comptine pour l’instant.</p></div>';
+  h += '<button type="button" class="btn" style="margin-top:6px" data-a="compNew">Ajouter une comptine</button><p class="hint">Les fichiers restent sur ce téléphone et ne sont pas inclus dans la sauvegarde.</p>';
+  return h;
+}
+function ytId(u) { var m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/.exec(u || ''); return m ? m[1] : ''; }
+function srcKind(u) { return /spotify/i.test(u || '') ? 'sp' : /youtu/i.test(u || '') ? 'yt' : ''; }
+var PLAYSVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.8l-10-6.5A1 1 0 0 0 8 5.5z"/></svg>';
+var NOTESVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>';
+function coverHTML(c) {
+  var k = srcKind(c.lien), img = c.img || (k === 'yt' && ytId(c.lien) ? 'https://img.youtube.com/vi/' + ytId(c.lien) + '/hqdefault.jpg' : '');
+  var bg = k === 'sp' ? '#1db954' : k === 'yt' ? '#e0262f' : 'var(--accent)', icon = k === 'yt' ? PLAYSVG : NOTESVG;
+  var ph = '<div class="cov ph" style="background:' + bg + '">' + icon + '</div>';
+  if (!img) return ph;
+  return '<img class="cov" src="' + esc(img) + '" alt="" onerror="this.outerHTML=this.getAttribute(\'data-ph\')" data-ph="' + esc(ph) + '">';
+}
+function ensureThumb(c) {
+  if (c.img || srcKind(c.lien) !== 'sp' || c.imgTried === c.lien) return Promise.resolve(false);
+  c.imgTried = c.lien;
+  var ctl = typeof AbortController !== 'undefined' ? new AbortController() : null, to = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
+  return fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(c.lien), ctl ? { signal: ctl.signal } : {}).then(function (r) { return r.json(); }).then(function (j) { clearTimeout(to); if (j && j.thumbnail_url) { c.img = j.thumbnail_url; save(); return true; } save(); return false; }).catch(function () { clearTimeout(to); save(); return false; });
+}
+function compSheet(c) {
+  var n = c ? c.niveaux || [] : ['PS', 'MS', 'GS'];
+  var h = '<h2>' + (c ? 'Modifier la comptine' : 'Nouvelle comptine') + '</h2>';
+  h += '<label for="ctitre">Titre</label><input type="text" id="ctitre" value="' + esc(c ? c.titre : '') + '">';
+  h += '<label for="cper">Période ou thème (facultatif)</label><input type="text" id="cper" value="' + esc(c ? c.periode : '') + '" placeholder="Ex. : Période 2, automne">';
+  h += '<label>Niveaux</label><div class="row wrap">';
+  ['PS', 'MS', 'GS'].forEach(function (x) { h += '<button type="button" class="chip' + (n.indexOf(x) >= 0 ? ' on' : '') + '" data-a="cLevel" data-p="' + x + '">' + x + '</button>'; });
+  h += '</div><label for="clien">Lien (Spotify, YouTube ou autre)</label><input type="text" id="clien" inputmode="url" value="' + esc(c ? c.lien : '') + '" placeholder="https://…">';
+  h += '<label for="caud">Fichier audio ou vidéo (MP3, MP4…)</label>' + (c && c.audioId ? '<p class="small muted">Fichier actuel : ' + esc(c.audioName || 'fichier') + ' <label class="row" style="font-weight:500;display:inline-flex"><input type="checkbox" id="cdelaud"> retirer</label></p>' : '') + '<input type="file" id="caud" accept="audio/*,video/*,.mp3,.mp4,.m4a">';
+  h += '<label for="cpdf">Paroles (PDF)</label>' + (c && c.pdfId ? '<p class="small muted">Fichier actuel : ' + esc(c.pdfName || 'paroles.pdf') + ' <label class="row" style="font-weight:500;display:inline-flex"><input type="checkbox" id="cdelpdf"> retirer</label></p>' : '') + '<input type="file" id="cpdf" accept="application/pdf,.pdf">';
+  h += '<label for="cnotes">Notes</label><textarea id="cnotes" style="min-height:70px">' + esc(c ? c.notes : '') + '</textarea>';
+  h += '<label class="row" style="font-weight:500"><input type="checkbox" id="ccur" style="width:22px;height:22px"' + (!c || c.current ? ' checked' : '') + '> À apprendre en ce moment</label>';
+  h += '<div class="stack" style="margin-top:14px"><button type="button" class="btn" data-a="compSave" data-p="' + (c ? c.id : '') + '">Enregistrer</button>' + (c ? '<button type="button" class="btn danger" data-a="compDel" data-p="' + c.id + '">Supprimer la comptine</button>' : '') + '<button type="button" class="btn secondary" data-a="sheetClose">Annuler</button></div><div id="cmsg" class="small" role="status"></div>';
+  return h;
+}
+
+/* ---------- 108 heures ---------- */
+function done(c) { return c.entries.reduce(function (a, e) { return a + (e.min || 0); }, 0); }
+var CATC = ['#3b78c9', '#3a9a5b', '#e0792f', '#8a5cc2', '#d65f8e', '#2a9aa0'];
+function tH108() {
+  var h = '<div class="mo">Temps de travail</div><input type="text" data-bind="g:t108" value="' + esc(D.t108 || 'Mes 108 heures') + '" aria-label="Titre de la page" style="font-size:26px;font-weight:700;border:0;background:transparent;padding:6px 0;margin:6px 0 4px"><textarea rows="2" data-bind="g:t108sub" aria-label="Sous-titre" class="ghost" style="color:var(--muted);font-size:14px;margin-bottom:6px">' + esc(D.t108sub != null ? D.t108sub : 'À ton rythme. Les totaux se modifient si tu es à temps partiel.') + '</textarea>';
+  var T = 0, F = 0;
+  D.cats.forEach(function (c) { T += c.total * 60; F += done(c); });
+  h += '<div class="card"><div class="row" style="align-items:flex-end"><div class="pct" style="color:var(--accent)">' + Math.round(Math.min(100, T ? F / T * 100 : 0)) + '%</div><input type="text" class="grow ghost" data-bind="g:t108tot" value="' + esc(D.t108tot != null ? D.t108tot : 'Au total') + '" aria-label="Titre du total" style="font-weight:700;margin-left:6px"><span>' + esc(hm(F)) + ' sur ' + esc(hm(T)) + '</span></div><div class="bar" style="margin:8px 0"><i style="width:' + Math.min(100, T ? F / T * 100 : 0) + '%"></i></div><div class="muted small">' + (F >= T ? 'Tout est fait.' : 'Il reste ' + esc(hm(T - F)) + '.') + '</div></div>';
+  D.cats.forEach(function (c, ci) {
+    var f = done(c), tot = c.total * 60, col = CATC[ci % CATC.length];
+    h += '<div class="card" style="border-left:8px solid ' + col + '"><textarea rows="2" class="ghost" data-bind="c:' + c.id + ':nom" aria-label="Nom de la catégorie" style="font-size:17px;font-weight:700;margin-bottom:6px;line-height:1.3">' + esc(c.nom) + '</textarea><div class="row"><span class="grow">' + esc(hm(f)) + ' sur ' + esc(hm(tot)) + '</span><span class="muted small">' + (f >= tot ? 'complet' : 'reste ' + esc(hm(tot - f))) + '</span></div><div class="bar" style="margin:8px 0 10px"><i style="width:' + Math.min(100, tot ? f / tot * 100 : 0) + '%;background:' + col + '"></i></div>';
+    var en = c.entries.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    en.forEach(function (e) { h += '<button type="button" class="block" data-a="entryEdit" data-p="' + c.id + '" data-q="' + e.id + '" style="padding:10px 12px;border-left-color:' + col + '"><div class="row"><strong>' + esc(fmtShort(e.date)) + '</strong><span class="grow">' + esc(hm(e.min)) + '</span></div>' + (e.note ? '<div class="muted small">' + esc(e.note) + '</div>' : '') + '</button>'; });
+    h += '<div class="row wrap"><button type="button" class="btn small" data-a="entryAdd" data-p="' + c.id + '" style="background:' + col + ';color:#fff">Ajouter des heures</button><button type="button" class="link" data-a="catEdit" data-p="' + c.id + '">Modifier</button></div></div>';
+  });
+  h += '<button type="button" class="btn secondary" data-a="catAdd">Ajouter une catégorie</button>';
+  return h;
+}
+
+/* ---------- Réglages ---------- */
+function tReglages() {
+  var h = '<div class="mo">Personnalisation</div><h1 style="margin:2px 0 12px">Réglages</h1>';
+  h += '<div class="card"><h2>Champs (cahier journal et ateliers)</h2><p class="muted small">Tous les champs se renomment, se cachent ou se suppriment (✕), et tu peux en ajouter. Les champs cachés gardent leur contenu.</p>';
+  D.fields.forEach(function (f) {
+    h += '<div class="fcard"><input type="text" data-bind="f:' + f.id + ':label" value="' + esc(f.label) + '" aria-label="Nom du champ" style="font-weight:600"><div class="row" style="margin-top:8px"><button type="button" class="chip' + (f.on ? ' on' : '') + '" data-a="fToggle" data-p="' + f.id + '">' + (f.on ? 'Affiché' : 'Caché') + '</button><span class="grow"></span><button type="button" class="chip" data-a="fMove" data-p="' + f.id + '" data-q="-1" aria-label="Monter">↑</button><button type="button" class="chip" data-a="fMove" data-p="' + f.id + '" data-q="1" aria-label="Descendre">↓</button><button type="button" class="chip" data-a="fDel" data-p="' + f.id + '" aria-label="Supprimer le champ" style="color:var(--danger)">✕</button></div></div>';
+  });
+  h += '<button type="button" class="btn secondary" data-a="fAdd">Ajouter un champ</button></div>';
+  h += '<div class="card"><h2>Sauvegarde</h2><p class="muted small">Tout reste sur ce téléphone. Crée un fichier de sauvegarde pour changer de téléphone ou garder une copie. Les fichiers (comptines, documents de la bibliothèque) ne sont pas inclus.</p><div class="stack"><button type="button" class="btn secondary" data-a="export">Créer ma sauvegarde</button><label class="btn secondary" for="imp" style="display:flex;align-items:center;justify-content:center;margin:0;cursor:pointer">Retrouver ma sauvegarde</label><input type="file" id="imp" accept=".json,application/json,text/plain" style="display:none"></div>' + (S.msg ? '<p class="small" role="status" style="margin-top:8px">' + esc(S.msg) + '</p>' : '') + '</div>';
+  h += '<div class="card"><h2>Confidentialité</h2><p class="small">Aucun compte, aucune publicité, aucune donnée envoyée. Tout est enregistré sur ton téléphone. Pour protéger les enfants, n’écris que des prénoms ou des initiales, jamais de noms complets ni de coordonnées.</p></div>';
+  return h;
+}
+
+/* ---------- Programme : sélecteur ---------- */
+function mineGroups() {
+  var g = {}; D.mine.forEach(function (m) { var k = m.d + '||' + m.s; (g[k] = g[k] || { d: m.d, s: m.s, list: [] }).list.push(m); });
+  return Object.keys(g).map(function (k) { return g[k]; });
+}
+function pickHTML() {
+  var P = S.pick, s = seanceOf(P.sid), h = '';
+  if (!s) return '';
+  h += '<div class="row"><h2 class="grow" style="margin:0">Choisir dans le programme</h2><button type="button" class="link" data-a="pickClose">Fermer</button></div>';
+  var MINE = P.d === PROG.length;
+  if (P.d != null) h += '<button type="button" class="link" data-a="pickBack">‹ Retour</button>';
+  if (P.d == null) {
+    h += '<h3>Domaine</h3>';
+    PROG.forEach(function (d, i) { h += '<button type="button" class="opt" data-a="pickD" data-p="' + i + '" style="border-left:8px solid ' + DOMC[i % DOMC.length] + '"><span class="grow">' + esc(d.nom) + '</span></button>'; });
+    h += '<button type="button" class="opt" data-a="pickD" data-p="' + PROG.length + '" style="border-left:8px solid ' + MINEC + '"><span class="grow">Mes objectifs (les miens)</span></button>';
+  } else if (MINE) {
+    h += '<p class="muted small">Tes propres objectifs, par exemple « Apprendre ensemble et vivre ensemble ».</p>';
+    mineGroups().forEach(function (g) {
+      h += '<h3>' + esc(g.d) + ' › ' + esc(g.s) + '</h3>';
+      g.list.forEach(function (m) {
+        var on = !!P.sel['m|' + m.id];
+        h += '<div class="row" style="align-items:stretch"><button type="button" class="opt grow' + (on ? ' on' : '') + '" data-a="pickO" data-p="m|' + m.id + '"><span class="ck">' + (on ? '✓' : '') + '</span><span class="grow">' + esc(m.o) + '</span></button><button type="button" class="link" data-a="mineDel" data-p="' + m.id + '" aria-label="Supprimer cet objectif">✕</button></div>';
+      });
+    });
+    h += '<div class="card" style="margin-top:10px"><h3 style="margin-top:0">Créer un objectif</h3><label for="mnd">Domaine</label><input type="text" id="mnd" placeholder="Ex. : Apprendre ensemble et vivre ensemble"><label for="mns">Sous-domaine (facultatif)</label><input type="text" id="mns"><label for="mno">Objectif</label><textarea id="mno" style="min-height:70px"></textarea><button type="button" class="btn secondary" style="margin-top:8px" data-a="mineAdd">Créer et choisir</button></div>';
+    var nm = Object.keys(P.sel).length;
+    h += '<div style="position:sticky;bottom:0;padding-top:8px;background:var(--bg)"><button type="button" class="btn" data-a="pickAdd"' + (nm ? '' : ' disabled style="opacity:.5"') + '>Ajouter ' + (nm ? nm + ' objectif' + (nm > 1 ? 's' : '') : 'les objectifs choisis') + '</button></div>';
+  } else if (P.s == null) {
+    h += '<p class="muted small"><i class="dot" style="background:' + DOMC[P.d % DOMC.length] + '"></i>' + esc(PROG[P.d].nom) + '</p><h3>Sous-domaine</h3>';
+    PROG[P.d].sous.forEach(function (x, i) { h += '<button type="button" class="opt" data-a="pickS" data-p="' + i + '"><span class="grow">' + esc(x.nom) + '</span></button>'; });
+  } else {
+    var sub = PROG[P.d].sous[P.s];
+    h += '<p class="muted small"><i class="dot" style="background:' + DOMC[P.d % DOMC.length] + '"></i>' + esc(PROG[P.d].nom) + ' › ' + esc(sub.nom) + '</p><div class="row wrap" style="margin:6px 0">';
+    AGES.forEach(function (a) { h += '<button type="button" class="chip' + (P.age === a[0] ? ' on' : '') + '" data-a="pickAge" data-p="' + a[0] + '">' + a[1] + '</button>'; });
+    h += '</div>';
+    var any = false;
+    sub.groupes.forEach(function (g, gi) {
+      var list = g.ages[P.age] || []; if (!list.length) return; any = true;
+      if (g.nom) h += '<h3>' + esc(g.nom) + '</h3>';
+      list.forEach(function (o, oi) {
+        var key = P.d + '|' + P.s + '|' + gi + '|' + P.age + '|' + oi, on = !!P.sel[key];
+        h += '<button type="button" class="opt' + (on ? ' on' : '') + '" data-a="pickO" data-p="' + key + '"><span class="ck">' + (on ? '✓' : '') + '</span><span class="grow">' + esc(o.replace(/ • /g, '\n• ')) + '</span></button>';
+      });
+    });
+    if (!any) h += '<p class="muted">Aucun objectif pour cette tranche d’âge dans ce sous-domaine.</p>';
+    var n = Object.keys(P.sel).length;
+    h += '<div style="position:sticky;bottom:0;padding-top:8px;background:var(--bg)"><button type="button" class="btn" data-a="pickAdd"' + (n ? '' : ' disabled style="opacity:.5"') + '>Ajouter ' + (n ? n + ' objectif' + (n > 1 ? 's' : '') : 'les objectifs choisis') + '</button></div>';
+  }
+  return h;
+}
+function openSheet(html) { $('#panel').innerHTML = html; $('#sheet').classList.add('open'); }
+function closeSheet() { $('#sheet').classList.remove('open'); S.pick = null; S.sheet = null; S.cLev = null; }
+function refreshPick() { if (S.pick) { var pn = $('#panel'), y = pn.scrollTop; pn.innerHTML = pickHTML(); pn.scrollTop = y; } }
+
+/* ---------- Feuilles diverses ---------- */
+function formSheet(title, bodyHTML, okLabel, okAction, okParam, extra) {
+  var h = '<h2>' + esc(title) + '</h2>' + bodyHTML + '<div class="stack" style="margin-top:14px"><button type="button" class="btn" data-a="' + okAction + '" data-p="' + esc(okParam || '') + '">' + esc(okLabel) + '</button>' + (extra || '') + '<button type="button" class="btn secondary" data-a="sheetClose">Annuler</button></div>';
+  openSheet(h);
+}
+function confirmSheet(text, action, param) { formSheet('Confirmer', '<p>' + esc(text) + '</p>', 'Oui, continuer', action, param); }
+function copySheet() {
+  var h = '<h2>' + (S.copyMode === 'block' ? 'Copier ce moment vers…' : 'Copier cette journée vers…') + '</h2><p class="muted small">Choisis un ou plusieurs jours. Rien n’est effacé : les moments s’ajoutent.</p><div class="row wrap">';
+  var shown = {};
+  for (var i = 1; i <= 14; i++) { var dt = addDays(S.date, i); shown[dt] = 1; h += '<button type="button" class="chip' + (S.copySel[dt] ? ' on' : '') + '" data-a="copyTog" data-p="' + dt + '">' + esc(fmtWd(dt)) + '</button>'; }
+  Object.keys(S.copySel).forEach(function (dt) { if (!shown[dt] && S.copySel[dt]) h += '<button type="button" class="chip on" data-a="copyTog" data-p="' + dt + '">' + esc(fmtWd(dt)) + '</button>'; });
+  h += '</div><label for="cpdate">Une autre date</label><div class="row"><input type="date" id="cpdate" class="grow"><button type="button" class="btn secondary small" data-a="copyAdd">Ajouter</button></div>';
+  var n = Object.keys(S.copySel).filter(function (k) { return S.copySel[k]; }).length;
+  h += '<div class="stack" style="margin-top:14px"><button type="button" class="btn" data-a="copyOk"' + (n ? '' : ' disabled style="opacity:.5"') + '>Copier' + (n ? ' vers ' + n + ' jour' + (n > 1 ? 's' : '') : '') + '</button><button type="button" class="btn secondary" data-a="sheetClose">Annuler</button></div>';
+  openSheet(h);
+}
+function tplSheet() {
+  var h = '<h2>Journées types</h2><p class="muted small">Une journée type est une trame que tu appliques à n’importe quel jour.</p>';
+  if (!D.templates.length) h += '<p class="muted">Aucune journée type enregistrée.</p>';
+  D.templates.forEach(function (t) { h += '<div class="row" style="margin-bottom:8px"><button type="button" class="btn secondary grow" data-a="tplApply" data-p="' + t.id + '">Appliquer « ' + esc(t.nom) + ' » (' + t.blocks.length + ' moments)</button><button type="button" class="link" data-a="tplDel" data-p="' + t.id + '" aria-label="Supprimer">✕</button></div>'; });
+  var d = dayOf(S.date);
+  if (d && d.blocks.length) h += '<label for="tplname">Enregistrer cette journée comme journée type</label><input type="text" id="tplname" placeholder="Ex. : Lundi, Jour d’EPS…"><button type="button" class="btn" style="margin-top:8px" data-a="tplSave">Enregistrer</button>';
+  h += '<div class="stack" style="margin-top:14px"><button type="button" class="btn secondary" data-a="sheetClose">Fermer</button></div>';
+  openSheet(h);
+}
+function fromBankSheet() {
+  var h = '<h2>Ma banque d’ateliers</h2><p class="muted small">Choisis un atelier ou un rituel : son contenu remplit cette séance.</p>';
+  if (!D.bank.length) h += '<p class="muted">Ta banque est vide.</p>';
+  D.bank.forEach(function (it) { var col = it.obj.length ? domColor(it.obj[0].d) : MINEC; h += '<button type="button" class="opt" data-a="fromBankPick" data-p="' + it.id + '" style="border-left:8px solid ' + col + '"><span class="grow"><strong>' + esc(it.titre || 'Sans titre') + '</strong><br><span class="muted small">' + (it.kind === 'rituel' ? 'Rituel' : 'Atelier') + (it.niveaux.length ? ' · ' + esc(it.niveaux.join('/')) : '') + '</span></span></button>'; });
+  h += '<div class="stack" style="margin-top:10px"><button type="button" class="btn secondary" data-a="sheetClose">Fermer</button></div>';
+  openSheet(h);
+}
+
+/* ---------- Impression ---------- */
+function printHTML() {
+  var d = dayOf(S.date), h = '<h1>Cahier journal : ' + esc(fmtDate(S.date)) + '</h1>';
+  if (d) {
+    h += '<p>Niveaux : ' + esc(d.niveaux.join(', ') || '—') + '</p>';
+    sortedBlocks(d).forEach(function (b) {
+      h += '<div class="pb" style="border-left:6px solid ' + blockColor(b) + '"><h4 style="font-size:12pt">' + esc((b.time || '') + ' ' + (b.titre || '')) + (b.duree ? ' (' + esc(hm(b.duree)) + ')' : '') + '</h4>';
+      b.seances.forEach(function (s) {
+        if (s.label || s.niveaux.length) h += '<p><strong>' + esc([s.label, s.niveaux.join('/')].filter(Boolean).join(' – ')) + '</strong></p>';
+        s.obj.forEach(function (o) { h += '<p>• ' + esc(o.s + ' : ' + o.o) + '</p>'; });
+        D.fields.forEach(function (f) { var v = s.f[f.id]; if (f.on && v) h += '<h4>' + esc(f.label) + '</h4><p>' + (f.type === 'check' ? 'Oui' : esc(v)) + '</p>'; });
+      });
+      h += '</div>';
+    });
+    if (d.note) h += '<p><strong>Remarques :</strong> ' + esc(d.note) + '</p>';
+  }
+  return h;
+}
+
+/* ---------- Rendu ---------- */
+function render(opt) {
+  var v = $('#view'), top = opt && opt.top;
+  var html = S.tab === 'journal' ? tJournal() : S.tab === 'bank' ? tBank() : S.tab === 'todo' ? tTodo() : S.tab === 'comp' ? tComp() : S.tab === 'eleves' ? tEleves() : S.tab === 'h108' ? tH108() : tReglages();
+  v.innerHTML = html;
+  document.querySelectorAll('#nav button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-p') === S.tab); });
+  if (top) v.scrollTop = 0;
+  if (S.tab === 'comp') D.comptines.forEach(function (c) { ensureThumb(c).then(function (ch) { if (ch && S.tab === 'comp' && !$('#sheet').classList.contains('open')) render(); }); });
+}
+var NATIVE = !!(window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform());
+function capPlug(n) { return window.Capacitor && window.Capacitor.Plugins ? window.Capacitor.Plugins[n] : null; }
+function shareBlob(blob, name) {
+  var FS = capPlug('Filesystem'), SH = capPlug('Share');
+  if (NATIVE && FS && SH) {
+    return new Promise(function (res, rej) { var r = new FileReader(); r.onload = function () { res(String(r.result).split(',')[1] || ''); }; r.onerror = rej; r.readAsDataURL(blob); })
+      .then(function (b64) { return FS.writeFile({ path: name, data: b64, directory: 'CACHE' }); })
+      .then(function (w) { return SH.share({ title: name, url: w.uri }); });
+  }
+  var file = new File([blob], name, { type: blob.type });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) return navigator.share({ files: [file], title: name });
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  return Promise.resolve();
+}
+var _docBlob = null, _docName = '';
+function showDoc(blob, nom, isImg) {
+  var type = isImg ? (blob.type || 'image/jpeg') : 'application/pdf', b2 = isImg ? blob : new Blob([blob], { type: type }), url = URL.createObjectURL(b2);
+  _docBlob = b2; _docName = (nom || 'document') + (isImg ? '' : '.pdf');
+  var h = '<div class="row"><h2 class="grow" style="margin:0;word-break:break-word">' + esc(nom) + '</h2><button type="button" class="link" data-a="sheetClose">Fermer</button></div>';
+  h += isImg ? '<img src="' + url + '" alt="" style="width:100%;border-radius:12px;margin-top:10px">' : '<iframe src="' + url + '" title="' + esc(nom) + '" style="width:100%;height:68vh;border:0;border-radius:12px;margin-top:10px;background:#fff"></iframe>';
+  h += '<div class="stack" style="margin-top:12px"><button type="button" class="btn secondary" data-a="docShare">Partager ou ouvrir dans une autre appli</button></div>';
+  openSheet(h);
+}
+function download(name, text) {
+  if (NATIVE) { shareBlob(new Blob([text], { type: 'application/json' }), name).catch(function () { S.msg = 'Impossible de créer la sauvegarde sur cet appareil.'; render(); }); return; }
+  try {
+    var blob = new Blob([text], { type: 'application/json' }), file = new File([blob], name, { type: 'application/json' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) { navigator.share({ files: [file], title: name }).catch(function () {}); return; }
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  } catch (e) { S.msg = 'Impossible de créer la sauvegarde sur cet appareil.'; render(); }
+}
+
+/* ---------- Liaison des champs ---------- */
+function bind(key, val, checked) {
+  var p = key.split(':');
+  if (p[0] === 'd') { dayOf(S.date, true)[p[1]] = val; }
+  else if (p[0] === 'b') { var b = curBlock(); if (b) {
+      if (p[1] === 'fin') { var t0 = toMin(b.time), t1 = toMin(val); if (t0 != null && t1 != null) { b.duree = (t1 - t0 + 1440) % 1440; var du = $('#bduree'); if (du) du.value = b.duree || ''; } }
+      else b[p[1]] = p[1] === 'duree' ? (parseInt(val, 10) || 0) : val;
+      if (p[1] !== 'fin') { var bf = $('#bfin'); if (bf) bf.value = endTime(b); }
+      document.querySelectorAll('.chip[data-a="setDur"][data-p="b"]').forEach(function (c) { c.classList.toggle('on', parseInt(c.getAttribute('data-q'), 10) === b.duree); });
+      var ht = $('#bhint'); if (ht) ht.textContent = 'Fin du moment : ' + (endTime(b) || '—');
+    } }
+  else if (p[0] === 's') {
+    var s = seanceOf(p[1]); if (!s) return;
+    if (p[2] === 'label' || p[2] === 'titre' || p[2] === 'kind') s[p[2]] = val;
+    else if (p[2] === 'duree') s.duree = parseInt(val, 10) || 0;
+    else if (p[2] === 'f') s.f[p[3]] = p[4] === 'c' ? (checked ? '1' : '') : val;
+  }
+  else if (p[0] === 'g') { D[p[1]] = val; }
+  else if (p[0] === 'e') { var ee = eleveOf(p[1]); if (ee) ee[p[2]] = val; }
+  else if (p[0] === 'n') { var en = eleveOf(p[1]); if (en) en.notes.forEach(function (n) { if (n.id === p[2]) n.txt = val; }); }
+  else if (p[0] === 'c') { var cc = findCat(p[1]); if (cc) cc[p[2]] = val; }
+  else if (p[0] === 'f') { D.fields.forEach(function (f) { if (f.id === p[1]) f[p[2]] = val; }); }
+  saveSoon();
+}
+
+/* ---------- Actions ---------- */
+function findCat(id) { for (var i = 0; i < D.cats.length; i++) if (D.cats[i].id === id) return D.cats[i]; return null; }
+function stripSeance(s) { var c = clone(s); delete c.titre; delete c.kind; delete c.duree; c.id = uid(); return c; }
+function copyBlocksTo(date, blocks) { var dd = dayOf(date, true); blocks.forEach(function (bk) { var c = clone(bk); c.id = uid(); c.seances.forEach(function (s) { s.id = uid(); }); dd.blocks.push(c); }); }
+function findComp(id) { for (var i = 0; i < D.comptines.length; i++) if (D.comptines[i].id === id) return D.comptines[i]; return null; }
+function readFile(inputId) { var el = document.getElementById(inputId); return el && el.files && el.files[0] ? el.files[0] : null; }
+
+function act(a, p, q) {
+  if (a === 'tab') { S.tab = p; S.blockId = null; S.itemId = null; S.eleveId = null; S.msg = ''; render({ top: true }); }
+  else if (a === 'day') { S.date = addDays(S.date, parseInt(p, 10)); render({ top: true }); }
+  else if (a === 'today') { S.date = iso(new Date()); render({ top: true }); }
+  else if (a === 'dayLevel') { var d = dayOf(S.date, true), i = d.niveaux.indexOf(p); if (i >= 0) d.niveaux.splice(i, 1); else d.niveaux.push(p); save(); render(); }
+  else if (a === 'addBlock') { var d2 = dayOf(S.date, true), b = { id: uid(), time: nextStart(d2) || (d2.blocks.length ? '' : '08:30'), titre: '', duree: 0, color: '', seances: [newSeance()] }; d2.blocks.push(b); save(); S.blockId = b.id; render({ top: true }); }
+  else if (a === 'openBlock') { S.blockId = p; var ob = curBlock(); if (ob && !ob.time) { ob.time = nextStart(dayOf(S.date), ob.id); save(); } render({ top: true }); }
+  else if (a === 'backDay') { S.blockId = null; render({ top: true }); }
+  else if (a === 'setDur') { var m = parseInt(q, 10), tg = p === 'b' ? curBlock() : bankItem(S.itemId); if (tg) { tg.duree = m; save(); render(); } }
+  else if (a === 'bColor') { var bc = curBlock(); if (bc) { bc.color = p; save(); render(); } }
+  else if (a === 'addSeance') { var bb = curBlock(); if (bb) { bb.seances.push(newSeance()); save(); render(); } }
+  else if (a === 'delSeance') { confirmSheet('Supprimer ce groupe et son contenu ?', 'delSeanceOk', p); }
+  else if (a === 'delSeanceOk') { var b3 = curBlock(); if (b3) { b3.seances = b3.seances.filter(function (s) { return s.id !== p; }); save(); } closeSheet(); render(); }
+  else if (a === 'seLevel') { var s1 = seanceOf(p); if (s1) { var k = s1.niveaux.indexOf(q); if (k >= 0) s1.niveaux.splice(k, 1); else s1.niveaux.push(q); save(); render(); } }
+  else if (a === 'rmObj') { var s2 = seanceOf(p); if (s2) { s2.obj.splice(parseInt(q, 10), 1); save(); render(); } }
+  else if (a === 'dupBlock') { var b4 = curBlock(), d4 = dayOf(S.date); if (b4 && d4) { var c = clone(b4); c.id = uid(); c.seances.forEach(function (s) { s.id = uid(); }); c.titre = (c.titre || '') + ' (copie)'; d4.blocks.push(c); save(); S.blockId = c.id; render({ top: true }); } }
+  else if (a === 'delBlock') { confirmSheet('Supprimer ce moment de la journée ?', 'delBlockOk'); }
+  else if (a === 'delBlockList') { confirmSheet('Supprimer ce moment de la journée ?', 'delBlockListOk', p); }
+  else if (a === 'delBlockListOk') { var dl = dayOf(S.date); if (dl) { dl.blocks = dl.blocks.filter(function (x) { return x.id !== p; }); save(); } closeSheet(); render(); }
+  else if (a === 'delBlockOk') { var d5 = dayOf(S.date); if (d5) { d5.blocks = d5.blocks.filter(function (x) { return x.id !== S.blockId; }); save(); } S.blockId = null; closeSheet(); render({ top: true }); }
+  else if (a === 'printDay') { $('#print').innerHTML = printHTML(); setTimeout(function () { try { window.print(); } catch (e) { /* ignoré */ } }, 50); }
+  else if (a === 'sheetClose') { closeSheet(); }
+  /* copie multi-jours */
+  else if (a === 'copyOpen') { S.copyMode = p; S.copySel = {}; copySheet(); }
+  else if (a === 'copyTog') { S.copySel[p] = !S.copySel[p]; copySheet(); }
+  else if (a === 'copyAdd') { var v = $('#cpdate').value; if (v) S.copySel[v] = true; copySheet(); }
+  else if (a === 'copyOk') {
+    var src = dayOf(S.date), blocks = S.copyMode === 'block' ? (curBlock() ? [curBlock()] : []) : (src ? src.blocks : []), last = null;
+    Object.keys(S.copySel).forEach(function (dt) { if (S.copySel[dt]) { copyBlocksTo(dt, blocks); last = dt; } });
+    save(); closeSheet(); if (last) { S.msg = ''; } render({ top: true });
+  }
+  /* journées types */
+  else if (a === 'tplOpen') { tplSheet(); }
+  else if (a === 'tplSave') { var nm = ($('#tplname').value || '').trim() || 'Journée type', src2 = dayOf(S.date); if (src2) { D.templates.push({ id: uid(), nom: nm, blocks: clone(src2.blocks) }); save(); } tplSheet(); }
+  else if (a === 'tplApply') { D.templates.forEach(function (t) { if (t.id === p) copyBlocksTo(S.date, t.blocks); }); save(); closeSheet(); render({ top: true }); }
+  else if (a === 'tplDel') { D.templates = D.templates.filter(function (t) { return t.id !== p; }); save(); tplSheet(); }
+  /* programme */
+  else if (a === 'pickOpen') { var s3 = seanceOf(p), age = '4+'; if (s3 && s3.niveaux.length) age = LEVEL_AGE[s3.niveaux[0]] || '4+'; S.pick = { sid: p, d: null, s: null, age: age, sel: {} }; openSheet(pickHTML()); }
+  else if (a === 'pickClose') { closeSheet(); }
+  else if (a === 'pickBack') { var P = S.pick; if (P.d === PROG.length) { P.d = null; } else if (P.s != null) { P.s = null; P.sel = {}; } else P.d = null; refreshPick(); }
+  else if (a === 'pickD') { S.pick.d = parseInt(p, 10); S.pick.s = null; S.pick.sel = {}; refreshPick(); }
+  else if (a === 'pickS') { S.pick.s = parseInt(p, 10); S.pick.sel = {}; refreshPick(); }
+  else if (a === 'pickAge') { S.pick.age = p; refreshPick(); }
+  else if (a === 'pickO') { if (S.pick.sel[p]) delete S.pick.sel[p]; else S.pick.sel[p] = 1; refreshPick(); }
+  else if (a === 'mineAdd') {
+    var o = ($('#mno').value || '').trim(); if (!o) return;
+    var m = { id: uid(), d: ($('#mnd').value || '').trim() || 'Mes objectifs', s: ($('#mns').value || '').trim() || 'Autre', o: o };
+    D.mine.push(m); save(); S.pick.sel['m|' + m.id] = 1; refreshPick();
+  }
+  else if (a === 'mineDel') { D.mine = D.mine.filter(function (m) { return m.id !== p; }); delete S.pick.sel['m|' + p]; save(); refreshPick(); }
+  else if (a === 'pickAdd') {
+    var PP = S.pick, se = seanceOf(PP.sid);
+    if (se) Object.keys(PP.sel).forEach(function (key) {
+      var x = key.split('|'), item;
+      if (x[0] === 'm') { var mm = D.mine.filter(function (z) { return z.id === x[1]; })[0]; if (!mm) return; item = { d: mm.d, s: mm.s, g: '', a: '', o: mm.o }; }
+      else { var dom = PROG[+x[0]], sub = dom.sous[+x[1]], g = sub.groupes[+x[2]]; item = { d: dom.nom, s: sub.nom, g: g.nom, a: x[3], o: g.ages[x[3]][+x[4]] }; }
+      var dup = se.obj.some(function (z) { return z.o === item.o && z.s === item.s; });
+      if (!dup) se.obj.push(item);
+    });
+    save(); closeSheet(); render();
+  }
+  /* banque */
+  else if (a === 'bKind') { S.bank.kind = p; render(); }
+  else if (a === 'bNiv') { S.bank.niv = p; render(); }
+  else if (a === 'itemNew') { var it = { id: uid(), kind: S.bank.kind, titre: '', duree: 0, label: '', niveaux: S.bank.niv ? [S.bank.niv] : [], obj: [], f: {} }; D.bank.push(it); save(); S.itemId = it.id; render({ top: true }); }
+  else if (a === 'openItem') { S.itemId = p; render({ top: true }); }
+  else if (a === 'backBank') { S.itemId = null; render({ top: true }); }
+  else if (a === 'itemDup') { var i0 = bankItem(S.itemId); if (i0) { var c0 = clone(i0); c0.id = uid(); c0.titre = (c0.titre || '') + ' (copie)'; D.bank.push(c0); save(); S.itemId = c0.id; render({ top: true }); } }
+  else if (a === 'itemDel') { confirmSheet('Supprimer cet élément de ta banque ?', 'itemDelOk'); }
+  else if (a === 'itemDelOk') { D.bank = D.bank.filter(function (x) { return x.id !== S.itemId; }); save(); S.itemId = null; closeSheet(); render({ top: true }); }
+  else if (a === 'itemUse') { formSheet('Ajouter au cahier journal', '<label for="udate">Jour</label><input type="date" id="udate" value="' + esc(S.date) + '"><label for="utime">Heure</label><input type="time" id="utime" value="' + esc(nextStart(dayOf(S.date))) + '">', 'Ajouter', 'itemUseOk'); }
+  else if (a === 'itemUseOk') {
+    var it2 = bankItem(S.itemId), dt = $('#udate').value || S.date; if (!it2) return;
+    var d6 = dayOf(dt, true); d6.blocks.push({ id: uid(), time: $('#utime').value || '', titre: it2.titre, duree: it2.duree || 0, color: '', seances: [stripSeance(it2)] });
+    save(); S.date = dt; S.itemId = null; S.tab = 'journal'; S.blockId = null; closeSheet(); render({ top: true });
+  }
+  else if (a === 'toBank') { var s5 = seanceOf(p), b5 = curBlock(); if (s5) { S.sheet = { sid: p, title: b5 ? b5.titre : '' }; formSheet('Ranger dans ma banque', '<label for="kt">Titre</label><input type="text" id="kt" value="' + esc(b5 ? b5.titre : '') + '"><label for="kk">Type</label><select id="kk"><option value="atelier">Atelier</option><option value="rituel">Rituel</option></select>', 'Ranger', 'toBankOk', p); } }
+  else if (a === 'toBankOk') { var s6 = seanceOf(p), b6 = curBlock(); if (s6) { var c6 = clone(s6); c6.id = uid(); c6.titre = ($('#kt').value || '').trim() || 'Sans titre'; c6.kind = $('#kk').value; c6.duree = b6 ? b6.duree || 0 : 0; D.bank.push(c6); save(); } S.sheet = null; closeSheet(); render(); }
+  else if (a === 'fromBank') { fromBankSheet(); }
+  else if (a === 'fromBankPick') {
+    var it3 = bankItem(p), bk = curBlock(); if (it3 && bk) {
+      var c7 = stripSeance(it3); bk.seances = bk.seances.filter(function (s) { return s.obj.length || Object.keys(s.f).some(function (k2) { return s.f[k2]; }) || s.label; });
+      bk.seances.push(c7); if (!bk.titre) bk.titre = it3.titre; if (!bk.duree) bk.duree = it3.duree || 0; save();
+    }
+    closeSheet(); render();
+  }
+  /* à faire */
+  else if (a === 'resTab') { S.resTab = p; S.itemId = null; render({ top: true }); }
+  else if (a === 'libOpenFolder') { S.libFolder = p; render({ top: true }); }
+  else if (a === 'libFolderNew') { formSheet('Nouveau dossier', '<label for="lfn">Nom du dossier</label><input type="text" id="lfn" placeholder="Ex. : Programmations, Période 1…">', 'Créer', 'libFolderSave', ''); }
+  else if (a === 'libFolderEdit') { var lf = libFolderOf(p); if (lf) formSheet('Dossier', '<label for="lfn">Nom du dossier</label><input type="text" id="lfn" value="' + esc(lf.nom) + '">', 'Enregistrer', 'libFolderSave', p, '<button type="button" class="btn danger" data-a="libFolderDel" data-p="' + p + '">Supprimer le dossier et son contenu</button>'); }
+  else if (a === 'libFolderSave') { var ln = ($('#lfn').value || '').trim() || 'Dossier'; if (p) { var lf2 = libFolderOf(p); if (lf2) lf2.nom = ln; } else { var nf2 = { id: uid(), nom: ln, parent: S.libFolder || '' }; D.libFolders.push(nf2); S.libFolder = nf2.id; } save(); closeSheet(); render({ top: true }); }
+  else if (a === 'libFolderDel') { confirmSheet('Supprimer ce dossier, ses sous-dossiers et tous les documents qu’ils contiennent ?', 'libFolderDelOk', p); }
+  else if (a === 'libFolderDelOk') { var ids = libDesc(p), par2 = (libFolderOf(p) || {}).parent || ''; D.libFiles.filter(function (f) { return ids.indexOf(f.folder) >= 0; }).forEach(function (f) { idbDel(f.id); }); D.libFiles = D.libFiles.filter(function (f) { return ids.indexOf(f.folder) < 0; }); D.libFolders = D.libFolders.filter(function (f) { return ids.indexOf(f.id) < 0; }); S.libFolder = par2; save(); closeSheet(); render({ top: true }); }
+  else if (a === 'libEdit') { var fi = libFileOf(p); if (fi) formSheet('Document', '<label for="lnm">Nom</label><input type="text" id="lnm" value="' + esc(fi.nom) + '"><label for="lfo">Dossier</label><select id="lfo">' + libFolderOptions(fi.folder || '') + '</select>', 'Enregistrer', 'libEditSave', p, '<button type="button" class="btn danger" data-a="libDel" data-p="' + p + '">Supprimer le document</button>'); }
+  else if (a === 'libEditSave') { var fi2 = libFileOf(p); if (fi2) { fi2.nom = ($('#lnm').value || '').trim() || fi2.nom; fi2.folder = $('#lfo').value; save(); } closeSheet(); render(); }
+  else if (a === 'libDel') { confirmSheet('Supprimer ce document ?', 'libDelOk', p); }
+  else if (a === 'libDelOk') { idbDel(p); D.libFiles = D.libFiles.filter(function (f) { return f.id !== p; }); save(); closeSheet(); render(); }
+  else if (a === 'libView') {
+    var fv = libFileOf(p); if (!fv) return;
+    var isImg = /^image\//.test(fv.mime || '');
+    idbGet(p).then(function (blob) {
+      if (!blob) { var m3 = $('#libmsg'); if (m3) m3.textContent = 'Document introuvable sur cet appareil.'; return; }
+      showDoc(blob, fv.nom, isImg);
+    }).catch(function () {});
+  }
+  else if (a === 'docShare') { if (_docBlob) shareBlob(_docBlob, _docName).catch(function () {}); }
+  else if (a === 'dayDocView') {
+    var dd = dayOf(S.date), x = dd && (dd.docs || []).filter(function (z) { return z.id === p; })[0]; if (!x) return;
+    var isI = /^image\//.test(x.mime || '');
+    idbGet(p).then(function (blob) {
+      if (!blob) { var m4 = $('#daymsg'); if (m4) m4.textContent = 'Document introuvable sur cet appareil.'; return; }
+      showDoc(blob, x.nom.replace(/\.pdf$/i, ''), isI);
+    }).catch(function () {});
+  }
+  else if (a === 'dayDocDel') { confirmSheet('Retirer ce document de cette journée ?', 'dayDocDelOk', p); }
+  else if (a === 'dayDocDelOk') { var d9 = dayOf(S.date); if (d9 && d9.docs) { idbDel(p); d9.docs = d9.docs.filter(function (z) { return z.id !== p; }); save(); } closeSheet(); render(); }
+  else if (a === 'goDay') { S.date = p; render(); }
+  else if (a === 'moreTog') { S.more[p] = !S.more[p]; render(); }
+  else if (a === 'quick') {
+    var pr = PRESETS[parseInt(p, 10)], dq = dayOf(S.date, true);
+    dq.blocks.push({ id: uid(), time: nextStart(dq) || (dq.blocks.length ? '' : '08:30'), titre: pr[0], duree: pr[1], color: pr[2], seances: [newSeance()] }); save(); render();
+    var vw = $('#view'); setTimeout(function () { var cs = document.querySelectorAll('.mrow'); if (cs.length) cs[cs.length - 1].scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 30);
+  }
+  else if (a === 'copyFrom') { var sd = dayOf(p); if (sd) { copyBlocksTo(S.date, sd.blocks); save(); render({ top: true }); } }
+  else if (a === 'eNiv') { S.eNiv = p; render(); }
+  else if (a === 'eNew') { var ne = { id: uid(), prenom: '', niveau: S.eNiv || '', notes: [] }; D.eleves.push(ne); save(); S.eleveId = ne.id; render({ top: true }); }
+  else if (a === 'eOpen') { S.eleveId = p; render({ top: true }); }
+  else if (a === 'eBack') { S.eleveId = null; render({ top: true }); }
+  else if (a === 'eLevel') { var el0 = eleveOf(S.eleveId); if (el0) { el0.niveau = el0.niveau === p ? '' : p; save(); render(); } }
+  else if (a === 'nAdd') { var el1 = eleveOf(S.eleveId); if (el1) { el1.notes.push({ id: uid(), date: iso(new Date()), txt: '' }); save(); render(); var tas = document.querySelector('textarea[data-bind^="n:"]'); if (tas) tas.focus(); } }
+  else if (a === 'nDel') { confirmSheet('Supprimer cette note ?', 'nDelOk', p); }
+  else if (a === 'nDelOk') { var el2 = eleveOf(S.eleveId); if (el2) { el2.notes = el2.notes.filter(function (n) { return n.id !== p; }); save(); } closeSheet(); render(); }
+  else if (a === 'eDel') { confirmSheet('Supprimer cet élève et toutes ses notes ?', 'eDelOk'); }
+  else if (a === 'eDelOk') { D.eleves = D.eleves.filter(function (e) { return e.id !== S.eleveId; }); save(); S.eleveId = null; closeSheet(); render({ top: true }); }
+  else if (a === 'tdFolder') { S.tdFolder = p; render(); }
+  else if (a === 'tdFolderNew') { formSheet('Nouveau dossier', '<label for="fdn">Nom du dossier</label><input type="text" id="fdn" placeholder="Ex. : Réunion parents, Fête de Noël…">', 'Créer', 'tdFolderSave', ''); }
+  else if (a === 'tdFolderEdit') { var fo = D.todoFolders.filter(function (f) { return f.id === p; })[0]; if (fo) formSheet('Dossier', '<label for="fdn">Nom du dossier</label><input type="text" id="fdn" value="' + esc(fo.nom) + '">', 'Enregistrer', 'tdFolderSave', p, '<button type="button" class="btn danger" data-a="tdFolderDel" data-p="' + p + '">Supprimer le dossier (les tâches restent)</button>'); }
+  else if (a === 'tdFolderSave') { var nm3 = ($('#fdn').value || '').trim() || 'Dossier'; if (p) { D.todoFolders.forEach(function (f) { if (f.id === p) f.nom = nm3; }); } else { var nf = { id: uid(), nom: nm3 }; D.todoFolders.push(nf); S.tdFolder = nf.id; } save(); closeSheet(); render(); }
+  else if (a === 'tdFolderDel') { D.todoFolders = D.todoFolders.filter(function (f) { return f.id !== p; }); D.todo.forEach(function (t) { if (t.folder === p) t.folder = ''; }); S.tdFolder = ''; save(); closeSheet(); render(); }
+  else if (a === 'estSet') { var ei = document.getElementById(q); if (ei) { ei.value = p; if (q === 'tdest') S.tdEst = p; } }
+  else if (a === 'tdMove') { var ids = openVisible().map(function (t) { return t.id; }), ix = ids.indexOf(p), ny = ix + parseInt(q, 10); if (ix >= 0 && ny >= 0 && ny < ids.length) { var tmp = ids[ix]; ids[ix] = ids[ny]; ids[ny] = tmp; reorderVisible(ids); save(); render(); } }
+  else if (a === 'tdTag') { S.tdTag = p; S.tdEst = $('#tdest').value; var txt = $('#tdnew').value, dd2 = $('#tddate').value; render(); $('#tdnew').value = txt; $('#tddate').value = dd2; }
+  else if (a === 'tdAdd') { var tx = ($('#tdnew').value || '').trim(); if (!tx) return; D.todo.push({ id: uid(), est: ($('#tdest').value || '').trim(), folder: S.tdFolder || '', t: tx, date: $('#tddate').value || '', tag: S.tdTag, done: false }); save(); render(); $('#tdnew').focus(); }
+  else if (a === 'tdTog') { D.todo.forEach(function (t) { if (t.id === p) t.done = !t.done; }); save(); render(); }
+  else if (a === 'tdShow') { S.showDone = !S.showDone; render(); }
+  else if (a === 'tdClear') { confirmSheet('Effacer toutes les tâches terminées ?', 'tdClearOk'); }
+  else if (a === 'tdClearOk') { D.todo = D.todo.filter(function (t) { return !t.done; }); save(); closeSheet(); render(); }
+  else if (a === 'tdEdit') {
+    var t0 = D.todo.filter(function (t) { return t.id === p; })[0]; if (!t0) return; S.sheet = { tag: t0.tag };
+    var tg = ''; TAGS.forEach(function (t) { tg += '<button type="button" class="chip' + (t0.tag === t[0] ? ' on' : '') + '" data-a="tdEditTag" data-p="' + t[0] + '">' + esc(t[1]) + '</button>'; });
+    formSheet('Modifier la tâche', '<label for="tdt">Tâche</label><input type="text" id="tdt" value="' + esc(t0.t) + '"><label>Catégorie</label><div class="row wrap" id="tdtags">' + tg + '</div><label for="tdd">Date</label><input type="date" id="tdd" value="' + esc(t0.date) + '"><label for="tde">Temps estimé</label><input type="text" id="tde" value="' + esc(t0.est || '') + '" placeholder="Ex. : 30 min, 2 jours…">' + estQuick('tde') + '<label for="tdf">Dossier</label><select id="tdf"><option value="">Aucun</option>' + D.todoFolders.map(function (f) { return '<option value="' + f.id + '"' + (t0.folder === f.id ? ' selected' : '') + '>' + esc(f.nom) + '</option>'; }).join('') + '</select>', 'Enregistrer', 'tdSave', p, '<button type="button" class="btn danger" data-a="tdDel" data-p="' + p + '">Supprimer</button>');
+  }
+  else if (a === 'tdEditTag') { S.sheet.tag = p; document.querySelectorAll('#tdtags .chip').forEach(function (c) { c.classList.toggle('on', c.getAttribute('data-p') === p); }); }
+  else if (a === 'tdSave') { D.todo.forEach(function (t) { if (t.id === p) { t.t = ($('#tdt').value || '').trim() || t.t; t.date = $('#tdd').value || ''; t.folder = $('#tdf').value; t.est = ($('#tde').value || '').trim(); t.tag = (S.sheet && S.sheet.tag) || t.tag; } }); save(); closeSheet(); render(); }
+  else if (a === 'tdDel') { D.todo = D.todo.filter(function (t) { return t.id !== p; }); save(); closeSheet(); render(); }
+  /* comptines */
+  else if (a === 'compNew') { S.cLev = ['PS', 'MS', 'GS']; openSheet(compSheet(null)); }
+  else if (a === 'compEdit') { var c8 = findComp(p); if (c8) { S.cLev = (c8.niveaux || []).slice(); openSheet(compSheet(c8)); } }
+  else if (a === 'cLevel') { var li = S.cLev.indexOf(p); if (li >= 0) S.cLev.splice(li, 1); else S.cLev.push(p); var chips = document.querySelectorAll('#panel .chip[data-a="cLevel"]'); chips.forEach(function (c) { c.classList.toggle('on', S.cLev.indexOf(c.getAttribute('data-p')) >= 0); }); }
+  else if (a === 'compSave') { compSave(p); }
+  else if (a === 'compDel') { confirmSheet('Supprimer cette comptine et ses fichiers ?', 'compDelOk', p); }
+  else if (a === 'compDelOk') { var c9 = findComp(p); if (c9) { [c9.audioId, c9.pdfId].forEach(function (id) { if (id) idbDel(id); }); D.comptines = D.comptines.filter(function (x) { return x.id !== p; }); save(); } closeSheet(); render(); }
+  else if (a === 'compPlay') {
+    var c10 = findComp(p), box = $('#pl-' + p); if (!c10 || !box) return;
+    if (box.firstChild) { box.innerHTML = ''; return; }
+    idbGet(c10.audioId).then(function (blob) {
+      if (!blob) { box.innerHTML = '<p class="small">Fichier introuvable sur cet appareil.</p>'; return; }
+      var url = URL.createObjectURL(blob), isV = (blob.type || '').indexOf('video') === 0 || c10.audioType === 'video';
+      box.innerHTML = '<' + (isV ? 'video' : 'audio') + ' controls playsinline src="' + url + '"></' + (isV ? 'video' : 'audio') + '>';
+    }).catch(function () { box.innerHTML = '<p class="small">Impossible de lire ce fichier.</p>'; });
+  }
+  else if (a === 'compPdf') {
+    var c11 = findComp(p); if (!c11) return;
+    idbGet(c11.pdfId).then(function (blob) { if (blob) showDoc(blob, (c11.titre || 'Paroles') + ' — paroles', false); }).catch(function () {});
+  }
+  /* 108 h */
+  else if (a === 'entryAdd' || a === 'entryEdit') {
+    var c0b = findCat(p), e0 = null; if (a === 'entryEdit') c0b.entries.forEach(function (e) { if (e.id === q) e0 = e; });
+    var mins = e0 ? e0.min : 60;
+    formSheet(e0 ? 'Modifier cette saisie' : 'Ajouter des heures', '<label for="edate">Date</label><input type="date" id="edate" value="' + esc(e0 ? e0.date : iso(new Date())) + '"><div class="row"><div class="grow"><label for="eh">Heures</label><input type="number" id="eh" inputmode="numeric" min="0" value="' + Math.floor(mins / 60) + '"></div><div class="grow"><label for="em">Minutes</label><input type="number" id="em" inputmode="numeric" min="0" max="59" value="' + (mins % 60) + '"></div></div><label for="enote">Note (facultatif)</label><input type="text" id="enote" value="' + esc(e0 ? e0.note : '') + '" placeholder="Ex. : conseil des maîtres">', 'Enregistrer', 'entrySave', p + '|' + (e0 ? e0.id : ''), e0 ? '<button type="button" class="btn danger" data-a="entryDel" data-p="' + esc(p + '|' + e0.id) + '">Supprimer cette saisie</button>' : '');
+  }
+  else if (a === 'entrySave') {
+    var pp = p.split('|'), c1 = findCat(pp[0]); if (!c1) return;
+    var min = (parseInt($('#eh').value, 10) || 0) * 60 + (parseInt($('#em').value, 10) || 0), dt2 = $('#edate').value || iso(new Date()), nt = $('#enote').value;
+    if (pp[1]) c1.entries.forEach(function (e) { if (e.id === pp[1]) { e.min = min; e.date = dt2; e.note = nt; } }); else c1.entries.push({ id: uid(), date: dt2, min: min, note: nt });
+    save(); closeSheet(); render();
+  }
+  else if (a === 'entryDel') { var q2 = p.split('|'), c5 = findCat(q2[0]); if (c5) { c5.entries = c5.entries.filter(function (e) { return e.id !== q2[1]; }); save(); } closeSheet(); render(); }
+  else if (a === 'catEdit' || a === 'catAdd') {
+    var c6b = a === 'catEdit' ? findCat(p) : null;
+    formSheet(c6b ? 'Modifier la catégorie' : 'Nouvelle catégorie', '<label for="cn">Nom</label><input type="text" id="cn" value="' + esc(c6b ? c6b.nom : '') + '"><label for="ct">Total d’heures prévu</label><input type="number" id="ct" inputmode="decimal" min="0" step="0.5" value="' + esc(c6b ? c6b.total : 0) + '">', 'Enregistrer', 'catSave', c6b ? c6b.id : '', c6b ? '<button type="button" class="btn danger" data-a="catDel" data-p="' + c6b.id + '">Supprimer la catégorie</button>' : '');
+  }
+  else if (a === 'catSave') {
+    var nm2 = $('#cn').value.trim() || 'Sans nom', tt = parseFloat(String($('#ct').value).replace(',', '.')) || 0;
+    if (p) { var c7b = findCat(p); if (c7b) { c7b.nom = nm2; c7b.total = tt; } } else D.cats.push({ id: uid(), nom: nm2, total: tt, entries: [] });
+    save(); closeSheet(); render();
+  }
+  else if (a === 'catDel') { confirmSheet('Supprimer cette catégorie et toutes ses saisies ?', 'catDelOk', p); }
+  else if (a === 'catDelOk') { D.cats = D.cats.filter(function (c) { return c.id !== p; }); save(); closeSheet(); render(); }
+  /* champs */
+  else if (a === 'fToggle') { D.fields.forEach(function (f) { if (f.id === p) f.on = !f.on; }); save(); render(); }
+  else if (a === 'fMove') { var idx = -1; D.fields.forEach(function (f, i) { if (f.id === p) idx = i; }); var to2 = idx + parseInt(q, 10); if (idx >= 0 && to2 >= 0 && to2 < D.fields.length) { var t = D.fields[idx]; D.fields[idx] = D.fields[to2]; D.fields[to2] = t; save(); render(); } }
+  else if (a === 'fDel') { confirmSheet('Supprimer ce champ ? Son contenu sera perdu dans toutes les séances. Tu pourras toujours le recréer avec « Ajouter un champ ».', 'fDelOk', p); }
+  else if (a === 'fDelOk') { D.fields = D.fields.filter(function (f) { return f.id !== p; }); save(); closeSheet(); render(); }
+  else if (a === 'fAdd') { formSheet('Nouveau champ', '<label for="fn">Nom du champ</label><input type="text" id="fn" placeholder="Ex. : Langage oral…"><label for="ft">Type</label><select id="ft"><option value="long">Texte long</option><option value="short">Texte court</option><option value="check">Case à cocher</option></select>', 'Ajouter', 'fAddOk'); }
+  else if (a === 'fAddOk') { var fn = $('#fn').value.trim(); if (fn) { D.fields.push({ id: 'c' + uid(), label: fn, type: $('#ft').value, on: true }); save(); } closeSheet(); render(); }
+  else if (a === 'export') { download('ma-classe-sauvegarde-' + iso(new Date()) + '.json', JSON.stringify({ app: 'ma-classe', v: 2, saved: new Date().toISOString(), data: D })); }
+  else if (a === 'importOk') { D = S.sheet; fixData(); S.sheet = null; save(); S.msg = 'Sauvegarde restaurée.'; closeSheet(); render({ top: true }); }
+}
+
+function compSave(id) {
+  var titre = ($('#ctitre').value || '').trim() || 'Sans titre', c = id ? findComp(id) : null;
+  if (!c) { c = { id: uid(), niveaux: [] }; D.comptines.push(c); }
+  var oldL = c.lien; c.titre = titre; c.periode = ($('#cper').value || '').trim(); c.lien = ($('#clien').value || '').trim(); if (c.lien && !/^(https?:|spotify:)/i.test(c.lien)) c.lien = 'https://' + c.lien; if (oldL !== c.lien) { c.img = ''; c.imgTried = ''; } c.notes = $('#cnotes').value || ''; c.current = $('#ccur').checked; c.niveaux = (S.cLev || []).slice();
+  var aud = readFile('caud'), pdf = readFile('cpdf'), jobs = [], msg = $('#cmsg');
+  if ($('#cdelaud') && $('#cdelaud').checked && c.audioId) { jobs.push(idbDel(c.audioId)); c.audioId = ''; c.audioName = ''; }
+  if ($('#cdelpdf') && $('#cdelpdf').checked && c.pdfId) { jobs.push(idbDel(c.pdfId)); c.pdfId = ''; c.pdfName = ''; }
+  if (aud) { if (c.audioId) jobs.push(idbDel(c.audioId)); c.audioId = 'a' + uid(); c.audioName = aud.name; c.audioType = (aud.type || '').indexOf('video') === 0 || /\.mp4$/i.test(aud.name) ? 'video' : 'audio'; jobs.push(idbPut(c.audioId, aud)); }
+  if (pdf) { if (c.pdfId) jobs.push(idbDel(c.pdfId)); c.pdfId = 'p' + uid(); c.pdfName = pdf.name; jobs.push(idbPut(c.pdfId, pdf)); }
+  if (msg) msg.textContent = jobs.length ? 'Enregistrement des fichiers…' : '';
+  Promise.all(jobs).then(function () { save(); closeSheet(); render(); }).catch(function () { if (msg) msg.textContent = 'Impossible d’enregistrer un fichier (place insuffisante ?). Le reste est enregistré.'; if (aud) { c.audioId = ''; c.audioName = ''; } if (pdf) { c.pdfId = ''; c.pdfName = ''; } save(); });
+}
+
+document.addEventListener('click', function (ev) {
+  var el = ev.target.closest('[data-a]'); if (!el) { if (ev.target.id === 'sheet') closeSheet(); return; }
+  if (el.disabled) return;
+  if (el.tagName === 'INPUT') return;
+  act(el.getAttribute('data-a'), el.getAttribute('data-p'), el.getAttribute('data-q'));
+});
+document.addEventListener('input', function (ev) {
+  var el = ev.target; if (el.id === 'eqq') { S.eq = el.value; var el3 = $('#elist'); if (el3) el3.innerHTML = elevesListHTML(); return; }
+  if (el.id === 'bq') { S.bank.q = el.value; var bl = $('#banklist'); if (bl) bl.innerHTML = bankListHTML(); return; }
+  var k = el.getAttribute && el.getAttribute('data-bind'); if (!k) return;
+  bind(k, el.value, el.checked);
+});
+document.addEventListener('change', function (ev) {
+  var el = ev.target;
+  if (el.getAttribute && el.getAttribute('data-a') === 'tdTog') { act('tdTog', el.getAttribute('data-p')); return; }
+  var kb = el.getAttribute && el.getAttribute('data-bind'); if (kb && (el.type === 'time' || el.type === 'number')) { bind(kb, el.value, el.checked); save(); return; }
+  if (el.id === 'dayimp') {
+    if (el.files && el.files.length) {
+      var dt0 = S.date, dm = $('#daymsg'), fails = 0; if (dm) dm.textContent = 'Enregistrement…';
+      Array.prototype.slice.call(el.files).reduce(function (pr, f) { return pr.then(function () { var id = 'D' + uid(); return idbPut(id, f).then(function () { var dy = dayOf(dt0, true); dy.docs = dy.docs || []; dy.docs.push({ id: id, nom: f.name, mime: f.type || (/\.pdf$/i.test(f.name) ? 'application/pdf' : ''), size: f.size }); }).catch(function () { fails++; }); }); }, Promise.resolve()).then(function () { save(); render(); var m5 = $('#daymsg'); if (m5 && fails) m5.textContent = 'Un fichier n’a pas pu être enregistré (place insuffisante ?).'; });
+    }
+    return;
+  }
+  if (el.id === 'libimp') { if (el.files && el.files.length) { libImport(el.files); } return; }
+  if (el.id === 'jump') { if (el.value) { S.date = el.value; S.blockId = null; render({ top: true }); } }
+  else if (el.id === 'bdom') { S.bank.dom = el.value; render(); }
+  else if (el.id === 'ikind') { /* déjà lié */ }
+  else if (el.id === 'imp' && el.files && el.files[0]) {
+    var fr = new FileReader();
+    fr.onload = function () {
+      try {
+        var o = JSON.parse(String(fr.result));
+        if (!o || o.app !== 'ma-classe' || !o.data || !o.data.fields || !o.data.days || !o.data.cats) throw new Error('bad');
+        S.sheet = o.data; formSheet('Remplacer mes données ?', '<p>Cette sauvegarde va remplacer ce qui est enregistré sur ce téléphone.</p>', 'Oui, la restaurer', 'importOk');
+      } catch (e) { S.msg = 'Ce fichier n’est pas une sauvegarde de cette appli.'; render(); }
+    };
+    fr.readAsText(el.files[0]); el.value = '';
+  }
+});
+['gesturestart', 'gesturechange', 'gestureend'].forEach(function (g) { document.addEventListener(g, function (e) { e.preventDefault(); }); });
+document.addEventListener('pointerdown', function (ev) {
+  var g = ev.target.closest && ev.target.closest('[data-grip]'); if (!g) return;
+  var row = g.closest('.todo'), list = $('#tdlist'); if (!row || !list) return;
+  ev.preventDefault();
+  var rows = Array.prototype.slice.call(list.querySelectorAll('.todo')), rects = rows.map(function (r) { var b = r.getBoundingClientRect(); return b.top + b.height / 2; });
+  var from = rows.indexOf(row), y0 = ev.clientY, to = from;
+  row.classList.add('drag'); try { g.setPointerCapture(ev.pointerId); } catch (e) { /* ignoré */ }
+  function mv(e) {
+    var dy = e.clientY - y0; row.style.transform = 'translateY(' + dy + 'px)';
+    var c = rects[from] + dy; to = 0; for (var i = 0; i < rects.length; i++) { if (c > rects[i]) to = i; } if (c <= rects[0]) to = 0;
+    rows.forEach(function (r, i) { if (r === row) return; var sh = 0; if (from < to && i > from && i <= to) sh = -1; if (from > to && i < from && i >= to) sh = 1; r.style.transform = sh ? 'translateY(' + (sh * (row.offsetHeight + 8)) + 'px)' : ''; r.style.transition = 'transform .12s'; });
+    var v = $('#view'), vb = v.getBoundingClientRect(); if (e.clientY < vb.top + 60) v.scrollTop -= 10; else if (e.clientY > vb.bottom - 60) v.scrollTop += 10;
+  }
+  function up() {
+    g.removeEventListener('pointermove', mv); g.removeEventListener('pointerup', up); g.removeEventListener('pointercancel', up);
+    if (to !== from) { var ids = rows.map(function (r) { return r.querySelector('[data-grip]').getAttribute('data-grip'); }); var id = ids.splice(from, 1)[0]; ids.splice(to, 0, id); reorderVisible(ids); save(); }
+    render();
+  }
+  g.addEventListener('pointermove', mv); g.addEventListener('pointerup', up); g.addEventListener('pointercancel', up);
+});
+window.addEventListener('beforeunload', save);
+document.addEventListener('visibilitychange', function () { if (document.hidden) save(); });
+(function () { var v = $('#view'); function fix() { if (v.scrollLeft) v.scrollLeft = 0; if (document.documentElement.scrollLeft) document.documentElement.scrollLeft = 0; if (document.body.scrollLeft) document.body.scrollLeft = 0; } v.addEventListener('scroll', fix, { passive: true }); window.addEventListener('scroll', fix, { passive: true }); })();
+
+load(); render();
+if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); }); }
+})();
+</script>
+</body>
+</html>
