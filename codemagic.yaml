@@ -21,9 +21,10 @@ workflows:
         script: npm ci
       - name: Ranger les fichiers de l'appli dans le dossier www
         script: |
-          mkdir -p www
+          rm -rf www
+          mkdir www
           for f in index.html manifest.webmanifest confidentialite.html icon-180.png icon-192.png icon-512.png; do
-            if [ -f "$f" ] && [ ! -f "www/$f" ]; then cp "$f" "www/$f"; fi
+            if [ -f "$f" ]; then cp "$f" "www/$f"; fi
           done
           ls -la www
       - name: Créer le projet iOS
