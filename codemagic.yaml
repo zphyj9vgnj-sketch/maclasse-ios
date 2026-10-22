@@ -19,6 +19,24 @@ workflows:
     scripts:
       - name: Installer les dépendances
         script: npm ci
+      - name: Créer le projet iOS
+        script: |
+          rm -rf ios
+          npx cap add ios
+      - name: Personnaliser l'app (icône, écran de démarrage, autorisations)
+        script: |
+          A=ios/App/App
+          cp resources/AppIcon-512@2x.png "$A/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png"
+          for f in splash-2732x2732.png splash-2732x2732-1.png splash-2732x2732-2.png; do
+            cp resources/splash.png "$A/Assets.xcassets/Splash.imageset/$f"
+          done
+          P="$A/Info.plist"
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$P"
+          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string Ma maternelle utilise l'appareil photo uniquement si tu choisis de photographier un document à ranger." "$P"
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string Ma maternelle accède à tes photos uniquement si tu choisis d'en ajouter une à ta bibliothèque." "$P"
+          /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations:2" "$P"
+          /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations:1" "$P"
+          /usr/libexec/PlistBuddy -c "Print" "$P"
       - name: Viser iOS 15 minimum
         script: |
           sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = 14.0;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g" ios/App/App.xcodeproj/project.pbxproj
