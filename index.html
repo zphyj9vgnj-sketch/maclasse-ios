@@ -309,7 +309,7 @@ function tJournal() {
   h += '<button type="button" data-a="addBlock" style="background:var(--accent);color:var(--accent-ink)">+ Autre</button></div>';
   h += '<div class="tiles"><button type="button" class="tile" data-a="tplOpen">' + IC.tpl + 'Journées types</button>';
   h += bl.length ? '<button type="button" class="tile" data-a="copyOpen" data-p="day">' + IC.copy + 'Copier vers d’autres jours</button>' : (src ? '<button type="button" class="tile" data-a="copyFrom" data-p="' + src + '">' + IC.copy + 'Reprendre le ' + esc(fmtWd(src)) + '</button>' : '');
-  if (bl.length && !NATIVE) h += '<button type="button" class="tile" data-a="printDay">' + IC.prt + 'Imprimer / PDF</button>';
+  if (bl.length) h += '<button type="button" class="tile" data-a="printDay">' + IC.prt + 'Exporter en PDF</button>';
   h += '<label class="tile" for="dayimp" style="cursor:pointer">' + IC.imp + 'Importer un PDF ou une photo</label></div>';
   h += '<input type="file" id="dayimp" multiple accept="application/pdf,image/*,.pdf,.png,.jpg,.jpeg,.heic" style="display:none"><div id="daymsg" class="small" role="status"></div>';
   var docs = d && d.docs ? d.docs : [];
@@ -799,6 +799,83 @@ function showDoc(blob, nom, isImg) {
   h += '<div class="stack" style="margin-top:12px"><button type="button" class="btn secondary" data-a="docShare">Partager ou ouvrir dans une autre appli</button></div>';
   openSheet(h);
 }
+/* ---------- Export PDF (sans bibliothèque) ---------- */
+var CP1252 = { '€': 128, '‚': 130, 'ƒ': 131, '„': 132, '…': 133, '†': 134, '‡': 135, 'ˆ': 136, '‰': 137, 'Š': 138, '‹': 139, 'Œ': 140, 'Ž': 142, '‘': 145, '’': 146, '“': 147, '”': 148, '•': 149, '–': 150, '—': 151, '˜': 152, '™': 153, 'š': 154, '›': 155, 'œ': 156, 'ž': 158, 'Ÿ': 159 };
+function pdfStr(t) {
+  var o = '';
+  for (var i = 0; i < t.length; i++) {
+    var ch = t[i], c = t.charCodeAt(i), m = CP1252[ch];
+    if (m) c = m; else if (c === 0xA0) c = 32; else if (c === 0x202F || c === 0x2009) c = 32; else if (c > 255 || (c >= 128 && c < 160)) c = 63;
+    if (c === 40 || c === 41 || c === 92) o += '\\' + String.fromCharCode(c); else if (c < 32) o += ' '; else o += String.fromCharCode(c);
+  }
+  return o;
+}
+function makeDayPDF(date) {
+  var d = dayOf(date); if (!d) return null;
+  var W = 595.28, H = 841.89, M = 42, CW = W - 2 * M, pages = [], cur = [], y = H - M;
+  var cv = document.createElement('canvas').getContext('2d');
+  function meas(t, sz, b) { cv.font = (b ? 'bold ' : '') + sz + 'px Helvetica, Arial, sans-serif'; return cv.measureText(t).width; }
+  function hexrgb(hx) { var m = /^#?([0-9a-f]{6})$/i.exec(hx || ''); if (!m) return '0.18 0.44 0.45'; var n = parseInt(m[1], 16); return [(n >> 16) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255].map(function (v) { return v.toFixed(3); }).join(' '); }
+  function newPage() { pages.push(cur.join('\n')); cur = []; y = H - M; }
+  function need(h) { if (y - h < M) newPage(); }
+  function wrap(t, sz, b, w) {
+    var out = [];
+    String(t || '').split(/\n/).forEach(function (par) {
+      var words = par.split(/\s+/).filter(Boolean), line = '';
+      if (!words.length) { out.push(''); return; }
+      words.forEach(function (wd) { var test = line ? line + ' ' + wd : wd; if (meas(test, sz, b) <= w || !line) line = test; else { out.push(line); line = wd; } });
+      if (line) out.push(line);
+    });
+    return out;
+  }
+  function text(t, x, yy, sz, b, col) { cur.push('BT /' + (b ? 'F2' : 'F1') + ' ' + sz + ' Tf ' + (col || '0.11 0.17 0.17') + ' rg ' + x.toFixed(2) + ' ' + yy.toFixed(2) + ' Td (' + pdfStr(t) + ') Tj ET'); }
+  function rect(x, yy, w, h, col) { cur.push(col + ' rg ' + x.toFixed(2) + ' ' + yy.toFixed(2) + ' ' + w.toFixed(2) + ' ' + h.toFixed(2) + ' re f'); }
+  function para(t, x, w, sz, b, col, lead) {
+    wrap(t, sz, b, w).forEach(function (ln) { need(lead); y -= lead; if (ln) text(ln, x, y, sz, b, col); });
+  }
+  var dn = ''; try { dn = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(parseISO(date)); } catch (e) { dn = date; }
+  dn = dn.charAt(0).toUpperCase() + dn.slice(1);
+  text('Cahier journal', M, y - 18, 11, false, '0.35 0.43 0.43'); y -= 24;
+  para(dn, M, CW, 20, true, '0.11 0.17 0.17', 24);
+  para('Niveaux : ' + (d.niveaux.join(', ') || '—'), M, CW, 10.5, false, '0.35 0.43 0.43', 14);
+  y -= 8;
+  sortedBlocks(d).forEach(function (b) {
+    var col = hexrgb(blockColor(b)), head = (b.time ? b.time + (endTime(b) ? ' – ' + endTime(b) : '') + '   ' : '') + (b.titre || 'Sans titre') + (b.duree ? '   (' + hm(b.duree) + ')' : '');
+    need(60); y -= 6;
+    rect(M, y - 22, CW, 22, col + '');
+    cur.pop(); rect(M, y - 22, CW, 22, hexrgb('#eef4f3')); rect(M, y - 22, 5, 22, col);
+    text(head, M + 12, y - 15, 12, true); y -= 22;
+    b.seances.forEach(function (s) {
+      var sub = [s.label, s.niveaux.join('/')].filter(Boolean).join(' – ');
+      if (sub) { y -= 4; para(sub, M + 12, CW - 14, 10.5, true, '0.11 0.17 0.17', 14); }
+      s.obj.forEach(function (o) { y -= 2; para('• ' + o.s + ' : ' + o.o.replace(/ • /g, ' ; '), M + 12, CW - 14, 9.5, false, '0.2 0.27 0.27', 12.5); });
+      D.fields.forEach(function (f) { var v = s.f[f.id]; if (!f.on || !v) return; y -= 5; para(f.label + (f.type === 'check' ? ' : oui' : ''), M + 12, CW - 14, 10, true, hexrgb('#2f6f73'), 13); if (f.type !== 'check') para(v, M + 12, CW - 14, 10.5, false, '0.11 0.17 0.17', 13.5); });
+      y -= 4;
+    });
+    y -= 6;
+  });
+  if (d.note) { need(40); y -= 8; para('Remarques de la journée', M, CW, 11, true, hexrgb('#2f6f73'), 15); para(d.note, M, CW, 10.5, false, '0.11 0.17 0.17', 13.5); }
+  pages.push(cur.join('\n'));
+  var objs = [], n = 0;
+  function add(body) { objs.push(body); return ++n; }
+  add('<< /Type /Catalog /Pages 2 0 R >>');
+  add('PAGES');
+  add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+  add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
+  var kids = [];
+  pages.forEach(function (c) {
+    var cid = n + 2, pid = add('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + W.toFixed(2) + ' ' + H.toFixed(2) + '] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ' + cid + ' 0 R >>');
+    kids.push(pid + ' 0 R'); add('<< /Length ' + c.length + ' >>\nstream\n' + c + '\nendstream');
+  });
+  objs[1] = '<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + kids.length + ' >>';
+  var out = '%PDF-1.4\n', offs = [];
+  objs.forEach(function (o, i) { offs.push(out.length); out += (i + 1) + ' 0 obj\n' + o + '\nendobj\n'; });
+  var xr = out.length; out += 'xref\n0 ' + (objs.length + 1) + '\n0000000000 65535 f \n';
+  offs.forEach(function (o) { out += ('0000000000' + o).slice(-10) + ' 00000 n \n'; });
+  out += 'trailer\n<< /Size ' + (objs.length + 1) + ' /Root 1 0 R >>\nstartxref\n' + xr + '\n%%EOF';
+  var u = new Uint8Array(out.length); for (var i = 0; i < out.length; i++) u[i] = out.charCodeAt(i) & 255;
+  return new Blob([u], { type: 'application/pdf' });
+}
 function download(name, text) {
   if (NATIVE) { shareBlob(new Blob([text], { type: 'application/json' }), name).catch(function () { S.msg = 'Impossible de créer la sauvegarde sur cet appareil.'; render(); }); return; }
   try {
@@ -860,7 +937,11 @@ function act(a, p, q) {
   else if (a === 'delBlockList') { confirmSheet('Supprimer ce moment de la journée ?', 'delBlockListOk', p); }
   else if (a === 'delBlockListOk') { var dl = dayOf(S.date); if (dl) { dl.blocks = dl.blocks.filter(function (x) { return x.id !== p; }); save(); } closeSheet(); render(); }
   else if (a === 'delBlockOk') { var d5 = dayOf(S.date); if (d5) { d5.blocks = d5.blocks.filter(function (x) { return x.id !== S.blockId; }); save(); } S.blockId = null; closeSheet(); render({ top: true }); }
-  else if (a === 'printDay') { $('#print').innerHTML = printHTML(); setTimeout(function () { try { window.print(); } catch (e) { /* ignoré */ } }, 50); }
+  else if (a === 'printDay') {
+    var pb = null; try { pb = makeDayPDF(S.date); } catch (e) { pb = null; }
+    if (!pb) { var dm2 = $('#daymsg'); if (dm2) dm2.textContent = 'Impossible de créer le PDF.'; return; }
+    shareBlob(pb, 'cahier-journal-' + S.date + '.pdf').catch(function () {});
+  }
   else if (a === 'sheetClose') { closeSheet(); }
   /* copie multi-jours */
   else if (a === 'copyOpen') { S.copyMode = p; S.copySel = {}; copySheet(); }
