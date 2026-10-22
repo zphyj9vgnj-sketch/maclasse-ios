@@ -1,0 +1,7 @@
+{
+  "appId": "fr.maclasse.maternelle",
+  "appName": "Ma classe de maternelle",
+  "webDir": "www",
+  "backgroundColor": "#F3F7F6",
+  "ios": { "contentInset": "never" }
+}
