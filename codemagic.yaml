@@ -49,6 +49,9 @@ workflows:
         script: |
           sed -i '' "s/IPHONEOS_DEPLOYMENT_TARGET = 14.0;/IPHONEOS_DEPLOYMENT_TARGET = 15.0;/g" ios/App/App.xcodeproj/project.pbxproj
           sed -i '' "s/platform :ios, '14.0'/platform :ios, '15.0'/" ios/App/Podfile
+      - name: Réserver l'app à l'iPhone
+        script: |
+          sed -i '' 's/TARGETED_DEVICE_FAMILY = "1,2";/TARGETED_DEVICE_FAMILY = 1;/g' ios/App/App.xcodeproj/project.pbxproj
       - name: Synchroniser Capacitor
         script: npx cap sync ios
       - name: Installer les pods
