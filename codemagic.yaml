@@ -40,11 +40,14 @@ workflows:
           done
           P="$A/Info.plist"
           /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$P"
-          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string Ma maternelle utilise l'appareil photo uniquement si tu choisis de photographier un document à ranger." "$P"
-          /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string Ma maternelle n'utilise jamais le micro : cette mention est requise par iOS pour le choix d'un fichier ou d'une photo." "$P"
-          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string Ma maternelle accède à tes photos uniquement si tu choisis d'en ajouter une à ta bibliothèque." "$P"
+          /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string Ma maternelle utilise l’appareil photo uniquement si tu choisis de photographier un document à ranger." "$P"
+          /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string Ma maternelle n’utilise jamais le micro. Cette mention est requise par iOS pour le choix d’un fichier ou d’une photo." "$P"
+          /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string Ma maternelle accède à tes photos uniquement si tu choisis d’en ajouter une à ta bibliothèque." "$P"
           /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations:2" "$P"
           /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations:1" "$P"
+          /usr/libexec/PlistBuddy -c "Print" "$P"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName Ma maternelle" "$P"
+          for K in NSCameraUsageDescription NSMicrophoneUsageDescription NSPhotoLibraryUsageDescription; do /usr/libexec/PlistBuddy -c "Print :$K" "$P" > /dev/null || { echo "ERREUR : $K manquant"; exit 1; }; done
           /usr/libexec/PlistBuddy -c "Print" "$P"
       - name: Viser iOS 15 minimum
         script: |
