@@ -41,6 +41,7 @@ workflows:
           P="$A/Info.plist"
           /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$P"
           /usr/libexec/PlistBuddy -c "Add :NSCameraUsageDescription string Ma maternelle utilise l'appareil photo uniquement si tu choisis de photographier un document à ranger." "$P"
+          /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string Ma maternelle n'utilise jamais le micro : cette mention est requise par iOS pour le choix d'un fichier ou d'une photo." "$P"
           /usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string Ma maternelle accède à tes photos uniquement si tu choisis d'en ajouter une à ta bibliothèque." "$P"
           /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations:2" "$P"
           /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations:1" "$P"
@@ -52,6 +53,8 @@ workflows:
       - name: Réserver l'app à l'iPhone
         script: |
           sed -i '' 's/TARGETED_DEVICE_FAMILY = "1,2";/TARGETED_DEVICE_FAMILY = 1;/g' ios/App/App.xcodeproj/project.pbxproj
+          if grep -q 'TARGETED_DEVICE_FAMILY = "1,2"' ios/App/App.xcodeproj/project.pbxproj; then echo 'ERREUR : iPad encore actif'; exit 1; fi
+          grep 'TARGETED_DEVICE_FAMILY' ios/App/App.xcodeproj/project.pbxproj
       - name: Synchroniser Capacitor
         script: npx cap sync ios
       - name: Installer les pods
