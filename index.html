@@ -142,7 +142,7 @@ audio, video { width:100%; margin-top:8px; border-radius:12px; }
 <div id="app"><main id="view" tabindex="-1"></main>
 <nav id="nav" aria-label="Navigation">
 <button type="button" data-a="tab" data-p="journal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 8h6M9 12h6"/></svg>Journal</button>
-<button type="button" data-a="tab" data-p="bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Réserve</button>
+<button type="button" data-a="tab" data-p="bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Bibliothèque</button>
 <button type="button" data-a="tab" data-p="todo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7l2 2 3-3M5 15l2 2 3-3M13 8h6M13 16h6"/></svg>À faire</button>
 <button type="button" data-a="tab" data-p="comp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>Comptines</button>
 <button type="button" data-a="tab" data-p="eleves"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>Élèves</button>
@@ -254,6 +254,7 @@ function tagHTML(o) { return '<span class="tag"><i class="dot" style="background
 var PRESETS = [['Accueil', 20, '#e0792f'], ['Regroupement', 20, '#8a5cc2'], ['Ateliers', 45, '#3b78c9'], ['Récréation', 20, '#3a9a5b'], ['Motricité / EPS', 30, '#2a9aa0'], ['Langage', 20, '#c99a14'], ['Collation', 15, '#d65f8e'], ['Rangement', 10, '#6b7a80'], ['Cantine', 60, '#6b7a80'], ['Sieste', 90, '#6b7a80']];
 var IC = {
   cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+  bank: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>',
   tpl: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 10v10"/></svg>',
   copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>',
   prt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></svg>',
@@ -307,7 +308,7 @@ function tJournal() {
   h += '<div class="sec">Ajouter un moment</div><div class="qa">';
   PRESETS.forEach(function (p, i) { h += '<button type="button" data-a="quick" data-p="' + i + '" style="background:' + p[2] + '">+ ' + esc(p[0]) + '</button>'; });
   h += '<button type="button" data-a="addBlock" style="background:var(--accent);color:var(--accent-ink)">+ Autre</button></div>';
-  h += '<div class="tiles"><button type="button" class="tile" data-a="tplOpen">' + IC.tpl + 'Journées types</button>';
+  h += '<div class="tiles"><button type="button" class="tile" data-a="reserveMenu">' + IC.bank + 'Réserve</button>';
   h += bl.length ? '<button type="button" class="tile" data-a="copyOpen" data-p="day">' + IC.copy + 'Copier vers d’autres jours</button>' : (src ? '<button type="button" class="tile" data-a="copyFrom" data-p="' + src + '">' + IC.copy + 'Reprendre le ' + esc(fmtWd(src)) + '</button>' : '');
   if (bl.length) h += '<button type="button" class="tile" data-a="printDay">' + IC.prt + 'Exporter en PDF</button>';
   h += '<label class="tile" for="dayimp" style="cursor:pointer">' + IC.imp + 'Importer un PDF ou une photo</label></div>';
@@ -418,12 +419,12 @@ function bankListHTML() {
   return h;
 }
 function tBank() {
+  return '<div class="mo">Documents</div><h1 style="margin:2px 0 12px">Bibliothèque</h1>' + tLib();
+}
+function tReserve() {
   if (S.itemId) return tItem();
   var f = S.bank;
-  var seg = '<div class="seg"><button type="button" class="' + (S.resTab === 'ateliers' ? 'on' : '') + '" data-a="resTab" data-p="ateliers">Ateliers et rituels</button><button type="button" class="' + (S.resTab === 'lib' ? 'on' : '') + '" data-a="resTab" data-p="lib">Bibliothèque</button></div>';
-  var hd0 = '<div class="mo">Ateliers et documents</div><h1 style="margin:2px 0 12px">Réserve</h1>';
-  if (S.resTab === 'lib') return hd0 + seg + tLib();
-  var h = hd0 + seg;
+  var h = '<button type="button" class="link" data-a="reserveClose">‹ Retour au journal</button><div class="mo">Cahier journal</div><h1 style="margin:2px 0 12px">Réserve d’ateliers</h1>';
   h += '<div class="seg"><button type="button" class="' + (f.kind === 'atelier' ? 'on' : '') + '" data-a="bKind" data-p="atelier">Ateliers</button><button type="button" class="' + (f.kind === 'rituel' ? 'on' : '') + '" data-a="bKind" data-p="rituel">Rituels</button></div>';
   h += '<div class="seg">';
   [['', 'Tous'], ['PS', 'PS'], ['MS', 'MS'], ['GS', 'GS']].forEach(function (n) { h += '<button type="button" class="' + (f.niv === n[0] ? 'on' : '') + '" data-a="bNiv" data-p="' + n[0] + '">' + n[1] + '</button>'; });
@@ -435,8 +436,8 @@ function tBank() {
   return h;
 }
 function tItem() {
-  var it = bankItem(S.itemId); if (!it) { S.itemId = null; return tBank(); }
-  var h = '<button type="button" class="link" data-a="backBank">‹ Retour à la banque</button>';
+  var it = bankItem(S.itemId); if (!it) { S.itemId = null; return tReserve(); }
+  var h = '<button type="button" class="link" data-a="backBank">‹ Retour à la réserve</button>';
   h += '<div class="card"><label for="ititre" style="margin-top:0">Titre</label><input type="text" id="ititre" data-bind="s:' + it.id + ':titre" value="' + esc(it.titre) + '" placeholder="Ex. : Quantité et écriture chiffrée">';
   h += '<div class="row"><div class="grow"><label for="ikind">Type</label><select id="ikind" data-bind="s:' + it.id + ':kind"><option value="atelier"' + (it.kind === 'atelier' ? ' selected' : '') + '>Atelier</option><option value="rituel"' + (it.kind === 'rituel' ? ' selected' : '') + '>Rituel</option></select></div><div style="width:120px"><label for="iduree">Durée (min)</label><input type="number" id="iduree" inputmode="numeric" min="0" data-bind="s:' + it.id + ':duree" value="' + esc(it.duree || '') + '"></div></div>' + durChips('i', it.duree) + '</div>';
   h += '<div class="seance">' + levelsHTML(it) + objHTML(it) + fieldsHTML(it) + '</div>';
@@ -770,7 +771,7 @@ function printHTML() {
 /* ---------- Rendu ---------- */
 function render(opt) {
   var v = $('#view'), top = opt && opt.top;
-  var html = S.tab === 'journal' ? tJournal() : S.tab === 'bank' ? tBank() : S.tab === 'todo' ? tTodo() : S.tab === 'comp' ? tComp() : S.tab === 'eleves' ? tEleves() : S.tab === 'h108' ? tH108() : tReglages();
+  var html = S.tab === 'journal' ? (S.reserve ? tReserve() : tJournal()) : S.tab === 'bank' ? tBank() : S.tab === 'todo' ? tTodo() : S.tab === 'comp' ? tComp() : S.tab === 'eleves' ? tEleves() : S.tab === 'h108' ? tH108() : tReglages();
   v.innerHTML = html;
   document.querySelectorAll('#nav button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-p') === S.tab); });
   if (top) v.scrollTop = 0;
@@ -918,7 +919,7 @@ function findComp(id) { for (var i = 0; i < D.comptines.length; i++) if (D.compt
 function readFile(inputId) { var el = document.getElementById(inputId); return el && el.files && el.files[0] ? el.files[0] : null; }
 
 function act(a, p, q) {
-  if (a === 'tab') { S.tab = p; S.blockId = null; S.itemId = null; S.eleveId = null; S.msg = ''; render({ top: true }); }
+  if (a === 'tab') { S.tab = p; S.reserve = false; S.blockId = null; S.itemId = null; S.eleveId = null; S.msg = ''; render({ top: true }); }
   else if (a === 'day') { S.date = addDays(S.date, parseInt(p, 10)); render({ top: true }); }
   else if (a === 'today') { S.date = iso(new Date()); render({ top: true }); }
   else if (a === 'dayLevel') { var d = dayOf(S.date, true), i = d.niveaux.indexOf(p); if (i >= 0) d.niveaux.splice(i, 1); else d.niveaux.push(p); save(); render(); }
@@ -954,6 +955,9 @@ function act(a, p, q) {
   }
   /* journées types */
   else if (a === 'tplOpen') { tplSheet(); }
+  else if (a === 'reserveMenu') { openSheet('<h2>Réserve</h2><p class="muted small">Ce que tu as mis de côté pour gagner du temps.</p><button type="button" class="opt" data-a="tplOpen"><strong>Journées types</strong><span class="muted small"> · des trames de journée à appliquer</span></button><button type="button" class="opt" data-a="reserveOpen"><strong>Ateliers et rituels</strong><span class="muted small"> · ta banque d’ateliers</span></button><button type="button" class="btn secondary" style="margin-top:10px" data-a="sheetClose">Fermer</button>'); }
+  else if (a === 'reserveOpen') { closeSheet(); S.reserve = true; S.itemId = null; render({ top: true }); }
+  else if (a === 'reserveClose') { S.reserve = false; S.itemId = null; render({ top: true }); }
   else if (a === 'tplSave') { var nm = ($('#tplname').value || '').trim() || 'Journée type', src2 = dayOf(S.date); if (src2) { D.templates.push({ id: uid(), nom: nm, blocks: clone(src2.blocks) }); save(); } tplSheet(); }
   else if (a === 'tplApply') { D.templates.forEach(function (t) { if (t.id === p) copyBlocksTo(S.date, t.blocks); }); save(); closeSheet(); render({ top: true }); }
   else if (a === 'tplDel') { D.templates = D.templates.filter(function (t) { return t.id !== p; }); save(); tplSheet(); }
@@ -995,7 +999,7 @@ function act(a, p, q) {
   else if (a === 'itemUseOk') {
     var it2 = bankItem(S.itemId), dt = $('#udate').value || S.date; if (!it2) return;
     var d6 = dayOf(dt, true); d6.blocks.push({ id: uid(), time: $('#utime').value || '', titre: it2.titre, duree: it2.duree || 0, color: '', seances: [stripSeance(it2)] });
-    save(); S.date = dt; S.itemId = null; S.tab = 'journal'; S.blockId = null; closeSheet(); render({ top: true });
+    save(); S.date = dt; S.itemId = null; S.tab = 'journal'; S.reserve = false; S.blockId = null; closeSheet(); render({ top: true });
   }
   else if (a === 'toBank') { var s5 = seanceOf(p), b5 = curBlock(); if (s5) { S.sheet = { sid: p, title: b5 ? b5.titre : '' }; formSheet('Ranger dans ma banque', '<label for="kt">Titre</label><input type="text" id="kt" value="' + esc(b5 ? b5.titre : '') + '"><label for="kk">Type</label><select id="kk"><option value="atelier">Atelier</option><option value="rituel">Rituel</option></select>', 'Ranger', 'toBankOk', p); } }
   else if (a === 'toBankOk') { var s6 = seanceOf(p), b6 = curBlock(); if (s6) { var c6 = clone(s6); c6.id = uid(); c6.titre = ($('#kt').value || '').trim() || 'Sans titre'; c6.kind = $('#kk').value; c6.duree = b6 ? b6.duree || 0 : 0; D.bank.push(c6); save(); } S.sheet = null; closeSheet(); render(); }
